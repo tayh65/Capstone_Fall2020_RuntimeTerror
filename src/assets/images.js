@@ -1,0 +1,1 @@
+export const logo = require('./coffee_logo.png');

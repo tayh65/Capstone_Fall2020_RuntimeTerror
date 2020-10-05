@@ -7,6 +7,8 @@
 }
 
 .login__logo {
+    position: relative;
+    left: 8px;
     width: 150px;
     height: 150px;
 }
@@ -52,8 +54,7 @@
     color: white;
     font-size: 20px;
     height: 25px;
-    border: 1px solid #a87b51;
-    background-color: #a87b51;
+    background-color: #b88e61;
     border-radius: 20px;
     margin: 2rem 10rem;
     text-align: center;

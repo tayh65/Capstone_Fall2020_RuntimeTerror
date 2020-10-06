@@ -5,9 +5,16 @@ const Op = db.Sequelize.Op;
 // Create and Save a new User
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.name) {
+    if (!req.body.fname) {
         res.status(400).send({
-            message: "Content [NAME] can not be empty!"
+            message: "Content [FIRST NAME] can not be empty!"
+        });
+        return;
+    }
+
+    if (!req.body.lname) {
+        res.status(400).send({
+            message: "Content [LAST NAME] can not be empty!"
         });
         return;
     }
@@ -26,11 +33,20 @@ exports.create = (req, res) => {
         return;
     }
 
+    if (!req.body.email) {
+        res.status(400).send({
+            message: "Content [EMAIL] can not be empty!"
+        });
+        return;
+    }
+
     // Create a User
     const user = {
-        name: req.body.name,
+        fname: req.body.fname,
+        lname: req.body.lname,
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        email: req.body.email
     };
 
     // Save User in the database

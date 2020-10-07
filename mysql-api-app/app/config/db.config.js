@@ -1,9 +1,10 @@
-module.exports = {
-    HOST: "localhost",
+dbConfig = {
+    HOST: "127.0.0.1",
     USER: "root",
     PASSWORD: "123456",
     DB: "testdb",
     dialect: "mysql",
+    port: "3306",
     pool: {
       max: 5,
       min: 0,
@@ -11,3 +12,5 @@ module.exports = {
       idle: 10000
     }
 };
+
+module.exports = dbConfig;

@@ -16,9 +16,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // link to db
 const db = require("./app/models");
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+db.sequelize.sync()
+  .then(() => {
+    console.log("Database synced.");
+    db.sequelize.authenticate()
+      .then( () => {
+        console.log("Database connected.");
+      })
+      .catch( (error) => {
+        console.log("Error: " +error.message);
+      });
+  })
+  .catch((error) => {
+    console.log("Error: " + error.message)
+  });
 
 // simple route
 app.get("/", (req, res) => {

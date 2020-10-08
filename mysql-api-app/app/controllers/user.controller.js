@@ -52,7 +52,7 @@ exports.create = (req, res) => {
     // Save User in the database
     User.create(user)
         .then(data => {
-            res.send(data);
+            res.json(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -64,25 +64,43 @@ exports.create = (req, res) => {
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-
+    User.findAll()
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the User."
+            });
+        });
 };
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
-
+    User.findByPk(req.params.id)
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the User."
+            });
+        });
 };
 
 // Update a User by the id in the request
 exports.update = (req, res) => {
-
+    res.json("update user with id " + req.params.id);
 };
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-
+    res.json("delete user with id " + req.params.id);
 };
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
-
+    res.json("delete all users.");
 };

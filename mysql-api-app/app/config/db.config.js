@@ -1,7 +1,7 @@
 dbConfig = {
-    HOST: "127.0.0.1",
-    USER: "root",
-    PASSWORD: "123456",
+    HOST: "testdb.chzxcndsgvai.us-east-1.rds.amazonaws.com",
+    USER: "tester",
+    PASSWORD: "12345678",
     DB: "testdb",
     dialect: "mysql",
     port: "3306",

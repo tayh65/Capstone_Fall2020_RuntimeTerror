@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -15,21 +16,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // link to db
-const db = require("./app/models");
-db.sequelize.sync()
-  .then(() => {
-    console.log("Database synced.");
-    db.sequelize.authenticate()
-      .then( () => {
-        console.log("Database connected.");
-      })
-      .catch( (error) => {
-        console.log("Error: " +error.message);
-      });
-  })
-  .catch((error) => {
-    console.log("Error: " + error.message)
-  });
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://root:runTimeT3rror@cluster0.ibhzj.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority", {
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(()=>{
+  console.log("MongoDb connected.");
+}).catch(error => console.log(error));
 
 // simple route
 app.get("/", (req, res) => {

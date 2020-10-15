@@ -1,9 +1,7 @@
-const db = require("../models");
-const User = db.users;
-const Op = db.Sequelize.Op;
+const User = require('../models/user.model');
 
 // Create and Save a new User
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     // Validate request
     if (!req.body.fname) {
         res.status(400).send({
@@ -50,7 +48,7 @@ exports.create = (req, res) => {
     };
 
     // Save User in the database
-    User.create(user)
+    await User.create(user)
         .then(data => {
             res.json(data);
         })
@@ -63,8 +61,8 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Users from the database.
-exports.findAll = (req, res) => {
-    User.findAll()
+exports.findAll = async (req, res) => {
+    await User.find()
         .then(data => {
             res.json(data);
         })
@@ -77,8 +75,8 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single User with an id
-exports.findOne = (req, res) => {
-    User.findByPk(req.params.id)
+exports.findOne = async (req, res) => {
+    await User.findOne(req.params.id)
         .then(data => {
             res.json(data);
         })
@@ -98,9 +96,4 @@ exports.update = (req, res) => {
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
     res.json("delete user with id " + req.params.id);
-};
-
-// Delete all Users from the database.
-exports.deleteAll = (req, res) => {
-    res.json("delete all users.");
 };

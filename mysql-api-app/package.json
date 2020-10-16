@@ -1,0 +1,38 @@
+{
+  "name": "mysql-api-app",
+  "version": "1.0.0",
+  "description": "An api service for storing data in a mysql database.",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tayh65/Capstone_Fall2020_RuntimeTerror.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "rest",
+    "api",
+    "sequelize",
+    "mysql"
+  ],
+  "author": "Luke Williams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tayh65/Capstone_Fall2020_RuntimeTerror/issues"
+  },
+  "homepage": "https://github.com/tayh65/Capstone_Fall2020_RuntimeTerror#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

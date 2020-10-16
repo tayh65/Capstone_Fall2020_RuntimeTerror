@@ -1,7 +1,7 @@
 import React from "react";
-import "./css/App.css";
-import "./css/Login.css";
-import { logo } from "./assets/images";
+import "../css/App.css";
+import "../css/Login.css";
+import { logo } from "../assets/images";
 
 function Login() {
   return (

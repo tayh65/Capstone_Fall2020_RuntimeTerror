@@ -1,7 +1,7 @@
 import React from "react";
-import "./css/App.css";
-import "./css/Register.css";
-import { logo3 } from "./assets/images";
+import "../css/App.css";
+import "../css/Register.css";
+import { logo3 } from "../assets/images";
 
 function Register() {
   return (

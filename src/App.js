@@ -1,8 +1,8 @@
 import React from 'react';
 import './css/App.css';
-import Home from './Home'
-import Login from './Login'
-import Register from './Register'
+import Home from './views/Home'
+import Login from './views/Login'
+import Register from './views/Register'
 import NavBar from './components/NavBar.component'
 
 import {
@@ -16,7 +16,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Router>
-          <NavBar />
           <Switch>
             <Route exact path="/">
               <Home/>

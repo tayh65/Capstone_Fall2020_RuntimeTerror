@@ -1,16 +1,16 @@
 .register {
     display: inline-flex;
+    text-align: center;
 }
 
 .register__pageTitle {
     position: relative;
-    bottom: 15px;
     font-size: 35px;
 }
 
 .register__logo {
     position: relative;
-    bottom: 35px;
+    bottom: 5px;
     left: 1px;
     width: 120px;
     height: 120px;

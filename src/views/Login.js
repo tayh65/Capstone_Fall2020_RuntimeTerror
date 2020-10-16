@@ -1,7 +1,7 @@
 import React from "react";
-import "./css/App.css";
-import "./css/Login.css";
-import { logo } from "./assets/images";
+//import "../css/App.css";
+import "../css/Login.css";
+import { logo } from "../assets/images";
 
 function Login() {
   return (
@@ -23,6 +23,8 @@ function Login() {
             placeholder="Password"
           ></input>
           <div className="login__loginButton">Sign In</div>
+          <a href="/register">Not a Member?</a>
+          <a href="/">Forgot Password?</a>
         </div>
       </div>
     </div>

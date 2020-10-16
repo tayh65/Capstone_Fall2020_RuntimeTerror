@@ -1,5 +1,6 @@
 .login {
     display: inline-flex;
+    text-align: center;
 }
 
 .login__pageTitle {
@@ -26,7 +27,7 @@
 
 .login__form {
     display: block;
-    margin-top: 3rem;
+    margin-top: 1rem;
 }
 
 .login__input {
@@ -60,4 +61,13 @@
     text-align: center;
     font-weight: bold;
     cursor: pointer;
+}
+
+a {
+    display: block;
+    position: relative;
+    bottom: 20px;
+    left: 13px;
+    font-size: 16px;
+    margin-top: 5px;
 }

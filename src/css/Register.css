@@ -1,5 +1,6 @@
 .register {
     display: inline-flex;
+    text-align: center;
 }
 
 .register__pageTitle {

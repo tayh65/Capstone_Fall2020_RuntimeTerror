@@ -4,6 +4,7 @@ import { FaBars } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
 import { SideBarData } from './NavBarData.component';
 import "../css/NavBar.css"
+import {IconContext} from 'react-icons';
 
 
 function NavBar() {
@@ -13,6 +14,7 @@ function NavBar() {
 
     return (
         <>
+        <IconContext.Provider value={{color: "#fff"}}>
             <div className="navbar">
                 <Link to="#" className="menu_bars">
                     <FaBars onClick= {showSideBar}/>
@@ -38,6 +40,7 @@ function NavBar() {
                     })}
                 </ul>
             </nav>
+            </IconContext.Provider>
         </>
     )
 }

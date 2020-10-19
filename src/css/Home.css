@@ -1,10 +1,12 @@
 .home {
     display: inline-flex;
     text-align: center;
+    margin-top: 15rem;
 }
 
 .home__pageTitle {
     font-size: 30px;
+    color: rgb(107, 107, 107);
 }
 
 .home__logo {
@@ -16,13 +18,13 @@
 
 .home__section {
     display: block;
-    background-color: #f0e4d3;
-    width: 500px;
-    height: fit-content;
-    border: 1px solid #f0e4d3;
+    background-color: #f8f8f9;
+    width: 300px;
+    height: 230px;
+    padding: 16px;
     border-radius: 10px;
-    margin-top: 1rem;
-    margin-right: 2rem;
+    margin-top: 3rem;
+    margin-right: 3rem;
 }
 
 .home__form {
@@ -47,34 +49,31 @@
     font-size: 28px;
 }
 
-.home__loginButton {
-    display: block;
-    padding: 5px;
+.home__buttons {
+    display: inline-block;
+    padding: 15px;
     width: 180px;
     height: 20px;
     color: white;
     font-size: 20px;
     height: 25px;
-    background-color: #b88e61;
+    background-color: rgb(107, 107, 107);
     border-radius: 20px;
-    margin: 1rem 10rem;
+    margin: 2rem;
     text-align: center;
     font-weight: bold;
     cursor: pointer;
 }
 
-.home__registerButton {
-    display: inline-block;
-    padding: 5px;
-    width: 180px;
-    height: 20px;
-    color: white;
+.home__buttonLabel {
+    position: relative;
+    bottom: 12px;
     font-size: 20px;
-    height: 25px;
-    background-color: #b88e61;
-    border-radius: 20px;
-    margin: 1rem 10rem;
+    color: white;
     text-align: center;
     font-weight: bold;
-    cursor: pointer;
+}
+
+h2 {
+    color: rgb(107, 107, 107);
 }

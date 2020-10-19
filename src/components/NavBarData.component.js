@@ -16,5 +16,12 @@ export const SideBarData = [
         path: '/login',
         icon: <AIIcons.AiOutlineLogin/>,
         cName: 'nav_text'
+    },
+
+    {
+        title: 'Register',
+        path: '/register',
+        icon: <AIIcons.AiOutlineUserAdd/>,
+        cName: 'nav_text'
     }
 ]

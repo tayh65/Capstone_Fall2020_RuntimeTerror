@@ -5,7 +5,10 @@ module.exports = app => {
   
     // Create a new user
     router.post("/add", users.create);
-  
+
+    // Login a user
+    router.post("/login", users.login);
+
     // Retrieve all users
     router.get("/", users.findAll);
   
@@ -18,5 +21,5 @@ module.exports = app => {
     // Delete a user with id
     router.delete("/remove/:id", users.delete);
   
-    app.use('/users', router);
+    app.use('/api/users', router);
   };

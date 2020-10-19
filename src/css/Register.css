@@ -6,6 +6,8 @@
 .register__pageTitle {
     position: relative;
     font-size: 35px;
+    font-weight: lighter;
+    color: rgb(107, 107, 107);
 }
 
 .register__logo {
@@ -13,24 +15,22 @@
     bottom: 5px;
     left: 1px;
     width: 120px;
-    height: 120px;
+    height: 90px;
 }
 
 .register__section {
     display: block;
-    background-color: #f0e4d3;
-    width: 420px;
-    height: 640px;
+    background-color: #f8f8f9;
+    width: 380px;
+    height: 560px;
     padding: 16px;
-    border: 1px solid #f0e4d3;
     border-radius: 10px;
-    margin-top: 1rem;
+    margin-top: 6rem;
 }
 
 .register__form {
     display: block;
     position: relative;
-    bottom: 50px;
     text-align: center;
 }
 
@@ -40,9 +40,11 @@
     padding: 3px;
     width: 300px;
     height: 25px;
-    border: 1px solid #f0ddc4;
+    border: 1px solid #f8f8f9;
     border-radius: 15px;
-    margin-left: 5rem;
+    margin-left: 3.8rem;
+    margin-bottom: 1.3rem;
+    margin-top: 0.2rem;
 }
 
 .register__icon {
@@ -55,18 +57,23 @@
 
 .register__registerButton {
     display: block;
-    padding: 5px;
+    padding: 15px;
     width: 180px;
-    height: 20px;
-    color: white;
-    font-size: 20px;
     height: 25px;
-    background-color: #b88e61;
+    height: 25px;
+    background-color: rgb(107, 107, 107);
     border-radius: 20px;
-    margin: 3rem 7rem;
+    margin: 1rem 7rem;
+    cursor: pointer;
+}
+
+.register__buttonLabel {
+    position: relative;
+    bottom: 12px;
+    font-size: 20px;
+    color: white;
     text-align: center;
     font-weight: bold;
-    cursor: pointer;
 }
 
 .register__formLabel {
@@ -74,4 +81,6 @@
     font-size: 18px;
     font-weight: bold;
     margin-right: 13rem;
+    font-weight: normal;
+    color: rgb(107, 107, 107);
 }

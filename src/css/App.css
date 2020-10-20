@@ -46,3 +46,8 @@
     /* Microsoft Edge */
     color: rgb(107, 107, 107);
 }
+
+.navbar{
+    position: absolute;
+    z-index: 1;
+}

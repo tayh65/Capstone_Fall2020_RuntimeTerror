@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+//const cors = require("cors");
 const mongoose = require("mongoose");
+const passport = require('passport');
 
 const app = express();
 
@@ -16,6 +17,10 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
+
+// Initialize passport authentication
+app.use(passport.initialize());
+require('./passport')(passport);
 
 // parse requests
 app.use(bodyParser.json());

@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/App.css";
 import "../css/Register.css";
-import { logo3 } from "../assets/images";
+import { coffeeBag_logo } from "../assets/images";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
@@ -57,15 +57,20 @@ class Register extends Component {
     let payload = this.state;
 
     api
-      .post(`${API_URL}/users/add`, payload)
+      .post(`${API_URL}/api/users/add`, payload)
       .then((res) => {
-        console.log(res.data);
-        this.props.history.push("/login");
+        if(res.data){
+          this.props.history.push("/success");
+        }
+        else{
+          alert("Oops, make sure the information you entered is correct!");
+        }
       })
       .catch((err) => {
         console.error(err);
+        console.log(err);
+        alert(err);
       });
-      alert("Account Created!");
 
   }
 
@@ -74,7 +79,7 @@ class Register extends Component {
       <div className="register">
         <div className="register__section">
           <h1 className="register__pageTitle">Register</h1>
-          <img className="register__logo" src={logo3} alt="logo"></img>
+          <img className="register__logo" src={coffeeBag_logo} alt="logo"></img>
           <form>
             <label className="register__formLabel" htmlFor="firstname">
               First Name
@@ -117,7 +122,7 @@ class Register extends Component {
               onChange={this.passwordUpdated}
             ></input>
             <label className="register__formLabel" htmlFor="email">
-              Email
+              Email 
             </label>
             <input
               className="register__input"
@@ -130,7 +135,7 @@ class Register extends Component {
               className="register__registerButton"
               onClick={this.handleSubmit}
             >
-              Sign Up
+              <h2 className="register__buttonLabel">Sign Up</h2>
             </div>
           </form>
         </div>

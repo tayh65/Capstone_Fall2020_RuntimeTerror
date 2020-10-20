@@ -1,3 +1,4 @@
-export const logo = require('./coffee_logo.png');
-export const logo2 = require('./coffee_logo_2.png');
-export const logo3 = require('./coffee_logo_3.png');
+export const coffeeMug_logo = require('./coffee_mug.png');
+export const coffeeBag_logo = require('./coffee_bag.png');
+export const chat_logo = require('./chat_logo.png');
+export const success_logo = require('./checkmark.png');

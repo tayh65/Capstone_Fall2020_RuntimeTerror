@@ -1,7 +1,7 @@
 {
-  "name": "mysql-api-app",
+  "name": "mongodb-api-app",
   "version": "1.0.0",
-  "description": "An api service for storing data in a mysql database.",
+  "description": "An api service for storing data in a mongodb database.",
   "main": "server.js",
   "scripts": {
     "test": "nodemon server.js",
@@ -16,8 +16,8 @@
     "express",
     "rest",
     "api",
-    "sequelize",
-    "mysql"
+    "monogodb",
+    "mogoose"
   ],
   "author": "Luke Williams",
   "license": "ISC",

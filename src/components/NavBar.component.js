@@ -20,8 +20,8 @@ function NavBar() {
                     <FaBars onClick= {showSideBar}/>
                 </Link>
             </div>
-            <nav className={sidebar ? 'nav-menu active' : 'nav_menu'}>
-                <ul className='nav_menu_items'>
+            <nav className={sidebar ? 'nav_menu active' : 'nav_menu'}>
+                <ul className='nav_menu_items' onClick= {showSideBar}>
                     <li className='navbar_toggle'>
                         <Link to='#' className='menu_bars'>
                             <AiOutlineClose />

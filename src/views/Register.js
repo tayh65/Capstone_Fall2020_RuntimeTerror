@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/App.css";
+import "../css/App.scss";
 import "../css/Register.css";
 import { coffeeBag_logo } from "../assets/images";
 import { Component } from "react";

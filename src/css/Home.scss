@@ -1,0 +1,100 @@
+.home {
+    display: inline-block;
+    margin-top: 0;
+}
+
+.home__header {
+    display: flex;
+    margin-top: 3rem;
+    justify-content: center;
+    overflow: auto;
+}
+
+.home__profileSection {
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    width: 200px;
+    height: 100px;
+    border: 2.5px solid black;
+    border-radius: 20px;
+}
+
+.home__pageTitle {
+    font-family: 'Lobster Two', cursive;
+    font-weight: normal;
+    text-align: center;
+}
+
+.home__sectionContainer {
+    display: inline-flex;
+}
+
+.home__section {
+    display: block;
+    background-color: rgb(85, 80, 80);
+    width: 350px;
+    height: 360px;
+    padding: 16px;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    margin-right: 4.5rem;
+    margin-left: 4.5rem;
+}
+
+.home__subSection {
+    position: relative;
+    bottom: 5px;
+    right: 5px;
+    background-color: black;
+    border: 2px border white;
+    width: 328px;
+    height: 340px;
+}
+
+.home__subSectionTitle {
+    position: relative;
+    color: white;
+    top: 25px;
+}
+
+.home__subSectionContent {
+    color: white;
+    margin: 2rem 1rem;
+    font-size: 18px;
+}
+
+.home__searchIcon {
+    color: white;
+    margin-top: 3rem;
+    font-size: 50px;
+}
+
+.home__arrowSection {
+    display: inline;
+    position: relative;
+    transition: right 10ms;
+    cursor: pointer;
+}
+
+.home__arrowIcon {
+    position: absolute;
+    color: white;
+    font-size: 50px;
+    top: 5px;
+    right: 150px;
+}
+
+.home__minimizeIcon {
+    position: relative;
+    color: white;
+    font-size: 50px;
+    top: -12px;
+    right: 20px;
+}
+
+.home__arrowSection:hover {
+    .home__arrowIcon {
+        right: 130px;
+    }
+}

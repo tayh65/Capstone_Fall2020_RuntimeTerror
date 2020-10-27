@@ -180,5 +180,14 @@ exports.update = async (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-  res.json("delete user with id " + req.params.id);
+  User.deleteOne({ _id: req.params.id })
+    .then(data => {
+      res.json({
+        deleteUser: true,
+        data: data
+      });
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 };

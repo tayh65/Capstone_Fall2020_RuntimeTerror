@@ -6,6 +6,7 @@ let {
   validateRegisterInput,
   validateLoginInput,
 } = require("../../validateInput");
+const { useReducer } = require("react");
 
 // Create and Save a new User
 exports.create = async (req, res) => {
@@ -16,42 +17,42 @@ exports.create = async (req, res) => {
   // Search for an existing user in the database
   // If found send error message, if not found hash password and create new user
   User.findOne({ email: req.body.email })
-  .then((user) => {
-    if (user) {
-      res.status(404).send("User already exists");
-    } else {
-      const user = {
-        fname: req.body.fname,
-        lname: req.body.lname,
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-      };
+    .then((user) => {
+      if (user) {
+        res.status(404).send("User already exists");
+      } else {
+        const user = {
+          fname: req.body.fname,
+          lname: req.body.lname,
+          username: req.body.username,
+          password: req.body.password,
+          email: req.body.email,
+        };
 
-      bcrypt.genSalt(10, (err, salt) => {
-        if (err) console.error("There was an error", err);
-        else {
-          bcrypt.hash(user.password, salt, (err, hash) => {
-            if (err) console.error("There was an error", err);
-            else {
-              user.password = hash;
-              User.create(user)
-                .then((data) => {
-                  res.json(data);
-                })
-                .catch((err) => {
-                  res.status(500).send({
-                    message:
-                      err.message ||
-                      "Some error occurred while creating the User.",
+        bcrypt.genSalt(10, (err, salt) => {
+          if (err) console.error("There was an error", err);
+          else {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+              if (err) console.error("There was an error", err);
+              else {
+                user.password = hash;
+                User.create(user)
+                  .then((data) => {
+                    res.json(data);
+                  })
+                  .catch((err) => {
+                    res.status(500).send({
+                      message:
+                        err.message ||
+                        "Some error occurred while creating the User.",
+                    });
                   });
-                });
-            }
-          });
-        }
-      });
-    }
-  });
+              }
+            });
+          }
+        });
+      }
+    });
 };
 
 // Login a user
@@ -74,7 +75,7 @@ exports.login = async (req, res) => {
           lname: user.lname,
           username: user.username,
           password: user.password,
-          email: user.email 
+          email: user.email
         };
         jwt.sign(
           payload,
@@ -107,7 +108,7 @@ exports.findAll = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the User.",
+        message: err.message || "Some error occurred while getting all Users.",
       });
     });
 };
@@ -120,17 +121,73 @@ exports.findOne = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the User.",
+        message: err.message || "Some error occurred while retrieving User data.",
       });
     });
 };
 
 // Update a User by the id in the request
-exports.update = (req, res) => {
-  res.json("update user with id " + req.params.id);
-};
+exports.update = async (req, res) => {
+  await User.findById(req.params.id)
+    .then(user => {
+      let newUser = {_id: req.params.id};
+      if (req.body.fname) newUser.fname = req.body.fname;
+      if (req.body.lname) newUser.lname = req.body.lname;
+      if (req.body.email) {
+        User.findOne({ email: req.body.email })
+          .then((data) => {
+            if (data) {
+              res.status(400).json("Invalid User email.");
+            }
+          });
+        newUser.email = req.body.email;
+      }
+      if (req.body.password) {
+        let newPassword = bcrypt.genSalt(10, (err, salt) => {
+          if (err) console.error("There was an error", err);
+          else {
+            return bcrypt.hash(req.body.password, salt, (err, hash) => {
+              if (err) console.error("There was an error", err);
+              else {
+                return hash;
+              }
+            });
+          }
+        });
+        if(newPassword) newUser.password = newPassword;
+        else newUser.password = req.body.password;
+      };
+      if(req.body.username) {
+        User.findOne( {username: req.body.username}, (err, data) => {
+          if(err) res.status(500).json(err);
+          if(data) res.status(400).json("Username already exists.");
+        } );
+        newUser.username = req.body.username;
+      }
+      console.log(newUser);
+      User.updateOne(user, newUser)
+        .then(newUserData => {
+          res.status(200).json(newUserData);
+        })
+        .catch(err => {
+          res.status(500).json(err);
+        });
+  })
+  .catch(err => {
+    res.status(500).json("Could not find specified user.");
+  });
+}
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-  res.json("delete user with id " + req.params.id);
+  User.deleteOne({ _id: req.params.id })
+    .then(data => {
+      res.json({
+        deleteUser: true,
+        data: data
+      });
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 };

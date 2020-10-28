@@ -4,7 +4,7 @@
   "description": "An api service for storing data in a mongodb database.",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon server.js",
+    "test": "node server.js",
     "start": "node server.js"
   },
   "repository": {

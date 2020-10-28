@@ -30,7 +30,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://root:runTimeT3rror@cluster0.ibhzj.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority", {
     useFindAndModify: false,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 }).then(()=>{
   console.log("MongoDb connected.");
 }).catch(error => console.log(error));

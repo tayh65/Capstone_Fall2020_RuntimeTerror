@@ -7,12 +7,20 @@
 
 .App {
     min-height: 100vh;
-    background: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
-    background-position: center;
-    background-size: inherit;
-    background-blend-mode: overlay;
-    overflow: hidden;
+    width: 100%;
+    background-color: rgb(245, 243, 241);
     text-align: center;
+    .App__divider {
+        height: 60vh;
+        background: url("https://media.gettyimages.com/photos/coffee-beans-black-and-white-photo-picture-id594952226?b=1&k=6&m=594952226&s=612x612&w=0&h=G-Lu-h-wJnNEyy_Pm0bp60g_22u3Ehpq32yykGiZByI=");
+        background-position: center;
+        background-attachment: fixed;
+        background-size: cover;
+        background-blend-mode: overlay;
+        background-repeat: no-repeat;
+        overflow: hidden;
+        transform: skewY(0deg);
+    }
 }
 
 .App-link {
@@ -47,7 +55,7 @@
     color: rgb(107, 107, 107);
 }
 
-.navbar{
+.navbar {
     position: absolute;
     z-index: 1;
 }

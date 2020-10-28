@@ -143,19 +143,19 @@ exports.update = async (req, res) => {
         newUser.email = req.body.email;
       }
       if (req.body.password) {
-        let newPassword = bcrypt.genSalt(10, (err, salt) => {
+        let newPassword = req.body.password;
+        bcrypt.genSalt(10, (err, salt) => {
           if (err) console.error("There was an error", err);
           else {
-            return bcrypt.hash(req.body.password, salt, (err, hash) => {
+            bcrypt.hash(req.body.password, salt, (err, hash) => {
               if (err) console.error("There was an error", err);
               else {
-                return hash;
+                newPassword = hash;
               }
             });
           }
         });
         if(newPassword) newUser.password = newPassword;
-        else newUser.password = req.body.password;
       };
       if(req.body.username) {
         User.findOne( {username: req.body.username}, (err, data) => {

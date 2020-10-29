@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/App.scss";
 import "../css/Login.css";
 import { coffeeMug_logo } from "../assets/images";
@@ -11,6 +11,7 @@ let API_URL = "http://localhost:4000";
 const api = axios.create({
   baseURL: API_URL,
 });
+
 
 class Login extends Component {
   constructor() {
@@ -35,16 +36,16 @@ class Login extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     let payload = this.state;
-    console.log(payload)
-
     api
       .post(`${API_URL}/api/users/login`, payload)
       .then((res) => {
         console.log(res);
-        if(res){
+        if (res) {
           alert("Login Successful!");
+            this.props.history.push("/home");
+            this.setState({ user: res.data });
+            localStorage.setItem('user', res.data)
         }
-        this.props.history.push("/home");
       })
       .catch((err) => {
         alert("Wrong Credentials, please try again", err);
@@ -54,29 +55,36 @@ class Login extends Component {
   render() {
     return (
       <div className="login">
-        <div className="login__section">
-          <h1 className="login__pageTitle">Login</h1>
-          <img className="login__logo" src={coffeeMug_logo} alt="logo"></img>
-          <div className="login__form">
-            <i className="login__icon material-icons">person</i>
-            <input
-              className="login__input"
-              type="text"
-              placeholder="Username"
-              onChange={this.usernameUpdated}
-            ></input>
-            <i className="login__icon material-icons">lock</i>
-            <input
-              className="login__input"
-              type="text"
-              placeholder="Password"
-              onChange={this.passwordUpdated}
-            ></input>
-            <div className="login__loginButton" onClick={this.handleSubmit}>
-             <p className="login__buttonLabel">Sign In</p>
+        <div className="login__sectionContainer">
+          <div className="login__section">
+            <div className="login__subSection">
+              <h2 className="login__subSectionTitle">Login</h2>
+              <img
+                className="login__logo"
+                src={coffeeMug_logo}
+                alt="logo"
+              ></img>
+              <div className="login__form">
+                <i className="login__icon material-icons">person</i>
+                <input
+                  className="login__input"
+                  type="text"
+                  placeholder="Username"
+                  onChange={this.usernameUpdated}
+                ></input>
+                <i className="login__icon material-icons">lock</i>
+                <input
+                  className="login__input"
+                  type="text"
+                  placeholder="Password"
+                  onChange={this.passwordUpdated}
+                ></input>
+                <div className="login__loginButton" onClick={this.handleSubmit}>
+                  <p className="login__buttonLabel">Sign In</p>
+                </div>
+                <a href="/register">Not a Member?</a>
+              </div>
             </div>
-            <a href="/register">Not a Member?</a>
-            <a href="/">Forgot Password?</a>
           </div>
         </div>
       </div>

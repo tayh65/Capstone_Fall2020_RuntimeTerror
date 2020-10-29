@@ -1,14 +1,14 @@
 import React from "react";
 import "../css/App.scss";
 import "../css/Home.scss";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 function Home() {
   return (
     <div className="home">
       <div className="home__header">
         <h1 className="home__pageTitle">MoChat</h1>
-        <div className="home__profileSection">Profile</div>
+        <div className="home__profileSection"></div>
       </div>
       <div className="home__sectionContainer">
         <div className="home__section">

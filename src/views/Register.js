@@ -77,9 +77,15 @@ class Register extends Component {
   render() {
     return (
       <div className="register">
-        <div className="register__section">
-          <h1 className="register__pageTitle">Register</h1>
-          <img className="register__logo" src={coffeeBag_logo} alt="logo"></img>
+         <div className="register__sectionContainer">
+          <div className="register__section">
+            <div className="register__subSection">
+              <h2 className="register__subSectionTitle">Register</h2>
+              <img
+                className="register__logo"
+                src={coffeeBag_logo}
+                alt="logo"
+              ></img>
           <form>
             <label className="register__formLabel" htmlFor="firstname">
               First Name
@@ -138,6 +144,8 @@ class Register extends Component {
               <h2 className="register__buttonLabel">Sign Up</h2>
             </div>
           </form>
+        </div>
+        </div>
         </div>
       </div>
     );

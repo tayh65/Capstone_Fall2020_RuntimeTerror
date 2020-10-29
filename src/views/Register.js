@@ -1,17 +1,10 @@
 import React from "react";
-import "../css/App.css";
+import "../css/App.scss";
 import "../css/Register.css";
 import { coffeeBag_logo } from "../assets/images";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-
-let API_URL = "http://localhost:4000";
-
-const api = axios.create({
-  baseURL: API_URL,
-});
-
+import { api, API_URL } from "../config/api";
 
 class Register extends Component {
   constructor() {

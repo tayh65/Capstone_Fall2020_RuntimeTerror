@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/App.css";
+import "../css/App.scss";
 import "../css/SuccessPage.css";
 import { success_logo } from "../assets/images";
 import { Component } from "react";

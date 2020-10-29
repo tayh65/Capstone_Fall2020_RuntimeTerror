@@ -3,14 +3,13 @@ import Message from './Message';
 import "../css/App.scss";
 import { withRouter } from "react-router-dom";
 
-componentDidUpdate() {
-    // get the messagelist container and set the scrollTop to the height of the container
-    const objDiv = document.getElementById('messageList');
-    objDiv.scrollTop = objDiv.scrollHeight;
-}
-
-
 class Messages extends React.Component {
+    componentDidUpdate() {
+        // get the messagelist container and set the scrollTop to the height of the container
+        const objDiv = document.getElementById('messageList');
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+    
     render() {
         // Loop through all the messages in the state and create a Message component
         const messages = this.props.messages.map((message, i) => {

@@ -1,23 +1,27 @@
 import React from "react";
-import io from "socket.io";
-import api from "../config/api";
+import io from "socket.io-client";
+import { api } from "../config/api";
 import Messages from "../components/Messages";
 import ChatInput from "../components/ChatInput";
 import "../css/App.scss";
 import { withRouter } from "react-router-dom";
 
+// setup connection to the server
+const ENDPOINT = "http://localhost:4000";
+const socket = io(ENDPOINT);
+
 class Chat extends React.Component {
-    socket = {};
+
     constructor(props) {
         super();
-        this.state = { messages: [] };
+        this.state = { username: props.username, messages: [] };
         this.sendHandler = this.sendHandler.bind(this);
 
         // Connect to the server --> still not sure how to make this happen
-        this.socket = io(api, { query: `username=${props.username}` }).connect();
+        // this.socket = io(api, { query: `username=${props.username}` }).connect();
 
         // Listen for messages from the server
-        this.socket.on('server:message', message => {
+        socket.on('server:message', message => {
             this.addMessage(message);
         });
     }
@@ -29,10 +33,10 @@ class Chat extends React.Component {
         };
 
         // Emit the message to the server
-        this.socket.emit('client:message', messageObject);
+        socket.emit('client:message', messageObject);
 
         messageObject.fromMe = true;
-        this.addMessage(messageObject);
+        //this.addMessage(messageObject);
     }
 
     addMessage(message) {

@@ -1,0 +1,119 @@
+.chat {
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.messages {
+    overflow-x: hidden;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.chat__pageTitle {
+    margin-top: 4rem;
+    font-size: 50px;
+}
+
+h3 {
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    background-color: #eee;
+}
+
+.chat-input {
+    position: relative;
+    right: 50px;
+    overflow: hidden;
+    padding: 0 10px;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
+}
+
+.chat-input input[type="text"] {
+    position: relative;
+    width: 80%;
+    border-radius: 10px;
+    height: 45px;
+}
+
+.chat__sectionContainer {
+    position: relative;
+    display: block;
+    background-color: black;
+    width: 1060px;
+    height: 500px;
+    margin-top: 2.5rem;
+    margin-right: 4.5rem;
+    margin-left: 4.5rem;
+    border-radius: 15px;
+    overflow: auto;
+}
+
+.chat__sectionContent {
+    color: white;
+    margin: 2rem 1rem;
+    font-size: 18px;
+}
+
+.chat__formSection {
+    display: inline;
+}
+
+.message.from-me .username {
+    display: none;
+}
+
+.message.from-me {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5px;
+}
+
+.message.from-me .message-body {
+    background-color: #af9570;
+    color: white;
+}
+
+.message {
+    margin-bottom: 20px;
+}
+
+.message-body {
+    max-width: 80%;
+    display: inline-block;
+    padding: 16px;
+    background-color: #eee;
+    border: 1px;
+    border-radius: 5px;
+    padding-right: 50px;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.chat__submitButton {
+    position: relative;
+    bottom: 50px;
+    right: 85px;
+    width: 80px;
+    height: 49px;
+    background-color: blue;
+    color: white;
+    border-radius: 15px;
+    float: right;
+    cursor: pointer;
+}
+
+.chat__buttonLabel {
+    position: relative;
+    top: 13px;
+}

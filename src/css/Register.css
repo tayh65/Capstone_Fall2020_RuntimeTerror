@@ -3,29 +3,59 @@
     text-align: center;
 }
 
-.register__pageTitle {
-    position: relative;
-    font-size: 35px;
-    font-weight: lighter;
-    color: rgb(107, 107, 107);
-}
-
-.register__logo {
-    position: relative;
-    bottom: 5px;
-    left: 1px;
-    width: 120px;
-    height: 90px;
+.register__sectionContainer {
+    display: inline-flex;
 }
 
 .register__section {
     display: block;
-    background-color: #f8f8f9;
-    width: 380px;
-    height: 560px;
+    background-color: rgb(85, 80, 80);
+    width: 460px;
+    height: 580px;
     padding: 16px;
-    border-radius: 10px;
-    margin-top: 6rem;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    margin-right: 4.5rem;
+    margin-left: 4.5rem;
+}
+
+.register__subSection {
+    position: relative;
+    bottom: 5px;
+    right: 5px;
+    background-color: black;
+    border: 2px border white;
+    width: 435px;
+    height: 557px;
+    justify-content: center;
+}
+
+.register__subSectionTitle {
+    position: relative;
+    color: white;
+    top: 25px;
+    font-size: 30px;
+    margin-bottom: 1rem;
+}
+
+.register__subSectionContent {
+    color: white;
+    margin: 2rem 1rem;
+    font-size: 18px;
+}
+
+.register__searchIcon {
+    color: white;
+    margin-top: 3rem;
+    font-size: 50px;
+}
+
+.register__logo {
+    position: relative;
+    top: 10px;
+    left: 1px;
+    width: 120px;
+    height: 90px;
 }
 
 .register__form {
@@ -38,7 +68,7 @@
     position: relative;
     right: 35px;
     padding: 3px;
-    width: 300px;
+    width: 350px;
     height: 25px;
     border: 1px solid #f8f8f9;
     border-radius: 15px;
@@ -61,7 +91,7 @@
     width: 180px;
     height: 25px;
     height: 25px;
-    background-color: rgb(107, 107, 107);
+    background-color: rgb(85, 80, 80);
     border-radius: 20px;
     margin: 1rem 7rem;
     cursor: pointer;
@@ -80,7 +110,7 @@
     position: relative;
     font-size: 18px;
     font-weight: bold;
-    margin-right: 13rem;
+    margin-right: 18rem;
     font-weight: normal;
-    color: rgb(107, 107, 107);
+    color: white;
 }

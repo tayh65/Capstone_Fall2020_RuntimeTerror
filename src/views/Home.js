@@ -7,7 +7,7 @@ function Home() {
     <div className="home">
       <div className="home__header">
         <h1 className="home__pageTitle">MoChat</h1>
-        <div className="home__profileSection">Profile</div>
+        <div className="home__profileSection"></div>
       </div>
       <div className="home__sectionContainer">
         <div className="home__section">
@@ -40,7 +40,7 @@ function Home() {
               Start chatting now!
             </p>
             <div className="home__arrowSection">
-              <a href="/search">
+              <a href="/chat">
                 <i className="home__minimizeIcon material-icons">minimize</i>
                 <i className="home__arrowIcon material-icons">
                   arrow_right_alt

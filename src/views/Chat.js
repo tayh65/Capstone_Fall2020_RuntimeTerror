@@ -1,14 +1,13 @@
 import React from "react";
 import io from "socket.io-client";
-import { api } from "../config/api";
+import { API_URL } from "../config/api";
 import Messages from "../components/Messages";
 import ChatInput from "../components/ChatInput";
 import "../css/App.scss";
 import { withRouter } from "react-router-dom";
 
 // setup connection to the server
-const ENDPOINT = "http://localhost:4000";
-const socket = io(ENDPOINT);
+const socket = io(API_URL);
 
 class Chat extends React.Component {
 

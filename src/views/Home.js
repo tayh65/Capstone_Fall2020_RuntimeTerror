@@ -1,7 +1,6 @@
 import React from "react";
 import "../css/App.scss";
 import "../css/Home.scss";
-//import { Link } from "react-router-dom";
 
 function Home() {
   return (

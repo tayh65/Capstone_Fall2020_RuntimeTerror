@@ -3,13 +3,7 @@ import "../css/App.scss";
 import "../css/Profile.scss";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-
-let API_URL = "http://localhost:4000";
-
-const api = axios.create({
-  baseURL: API_URL,
-});
+import { api, API_URL } from "../config/api";
 
 class Profile extends Component {
   constructor() {

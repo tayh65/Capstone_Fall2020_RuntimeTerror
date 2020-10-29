@@ -5,6 +5,7 @@ import Login from "./views/Login";
 import Profile from "./views/Profile";
 import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
+import Chat from "./views/Chat";
 import NavBar from "./components/NavBar.component";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -31,6 +32,9 @@ function App() {
             </Route>
             <Route path="/success">
               <SuccessPage />
+            </Route>
+            <Route path= "/chat">
+              <Chat/>
             </Route>
           </Switch>
         </Router>

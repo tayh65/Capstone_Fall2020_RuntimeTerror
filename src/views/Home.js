@@ -40,7 +40,7 @@ function Home() {
               Start chatting now!
             </p>
             <div className="home__arrowSection">
-              <a href="/search">
+              <a href="/chat">
                 <i className="home__minimizeIcon material-icons">minimize</i>
                 <i className="home__arrowIcon material-icons">
                   arrow_right_alt

@@ -24,3 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 es-lint
+mongodb-api-app/package-lock.json
+package-lock.json

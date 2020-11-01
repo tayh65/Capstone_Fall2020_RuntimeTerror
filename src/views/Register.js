@@ -54,6 +54,10 @@ class Register extends Component {
       .then((res) => {
         if(res.data){
           this.props.history.push("/success");
+          let isLoggedIn = localStorage.getItem("isLoggedIn");
+          if(isLoggedIn === "true"){
+            localStorage.clear();
+          }
         }
         else{
           alert("Oops, make sure the information you entered is correct!");
@@ -61,7 +65,6 @@ class Register extends Component {
       })
       .catch((err) => {
         console.error(err);
-        console.log(err);
         alert(err);
       });
 

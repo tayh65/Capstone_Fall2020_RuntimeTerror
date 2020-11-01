@@ -6,7 +6,7 @@
 
 .success__pageTitle {
     font-size: 40px;
-    color: rgb(107, 107, 107);
+    color: white;
     font-weight: lighter;
 }
 
@@ -21,22 +21,23 @@
 
 .success__section {
     display: block;
-    background-color: #f8f8f9;
+    background-color: black;
     width: 300px;
     height: 250px;
     padding: 16px;
     border-radius: 10px;
     margin-top: 3rem;
+    margin-bottom: 2rem;
 }
 
 .success__icon {
     display: flex;
     position: relative;
-    bottom: 6px;
+    bottom: 10px;
     text-align: center;
     font-size: 35px;
     margin: auto 1rem auto 3rem;
-    color: rgb(107, 107, 107);
+    color: white;
 }
 
 .success__links {
@@ -44,10 +45,10 @@
     text-align: center;
     position: relative;
     margin: 0 auto;
-    bottom: 15px;
+    bottom: 30px;
     left: 13px;
     font-size: 16px;
-    margin-top: 5px;
-    color: rgb(107, 107, 107);
+    margin-top: 0px;
+    color: white;
     text-decoration: none;
 }

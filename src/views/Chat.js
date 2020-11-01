@@ -28,7 +28,6 @@ class Chat extends React.Component {
 
   messageSubmit(event) {
     event.preventDefault();
-    console.log(event.target.value);
   }
 
   sendHandler(message) {
@@ -57,7 +56,7 @@ class Chat extends React.Component {
         <h1 className="chat__pageTitle">Welcome to Chat!</h1>
         <div className="chat__sectionContainer">
           <div className="chat__formSection">
-            <Messages messages={this.state.messages} />
+=            <Messages messages={this.state.messages} />
           </div>
         </div>
         <ChatInput onSend={this.sendHandler} />

@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/mysql-api-app/node_modules
+/mongodb-api-app/node_modules
 /.pnp
 .pnp.js
 

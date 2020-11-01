@@ -96,7 +96,7 @@ class Profile extends Component {
     event.preventDefault();
     let id = this.state._id;
     api
-      .delete(`${API_URL}/api/users/delete/${id}`)
+      .delete(`${API_URL}/api/users/remove/${id}`)
       .then(() => {
         alert("Account Deleted");
         this.props.clickLogout();

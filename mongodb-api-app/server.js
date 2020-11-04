@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const passport = require('passport');
 const socketIo = require("socket.io");
 
-//default channels
+// default channels
+// user can create their own and add them here later
 var STATIC_CHANNELS = [{
   name: 'Test 1',
   participants: 0,
@@ -58,7 +59,7 @@ app.get("/", (req, res) => {
 // route to get the current list of channels
 app.get("/getChannels", (req, res) => {
   res.json({
-      channels: STATIC_CHANNELS
+    channels: STATIC_CHANNELS
   })
 });
 
@@ -81,17 +82,21 @@ io.on("connection", (socket) => {
   // notify client of successful connection
   socket.emit("connected-to-server", null);
 
-  // handel request to join chat room
+  // adds client to a chatroom they specify by id
   socket.on("channel-join", id => {
     console.log("user joined channel id", id);
     STATIC_CHANNELS.forEach(c => {
+      // adds user if the id they used matches the list of rooms on the server
       if (c.id === id) {
         if (c.sockets.indexOf(socket.id) == (-1)) {
           c.sockets.push(socket.id);
           c.participants++;
           io.emit("channel", c);
         }
-      } else {
+      }
+
+      // removes user if the id they used doesn't match any rooms on the server
+      else {
         let index = c.sockets.indexOf(socket.id);
         if (index != (-1)) {
           c.sockets.splice(index, 1);
@@ -113,6 +118,7 @@ io.on("connection", (socket) => {
   // a client disconnected
   socket.on("disconnect", () => {
     console.log("Client disconnected");
+    // if user was in a chatroom, remove them from the room
     STATIC_CHANNELS.forEach(c => {
       let index = c.sockets.indexOf(socket.id);
       if (index != (-1)) {

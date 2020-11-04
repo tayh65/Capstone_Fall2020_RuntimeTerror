@@ -1,61 +1,40 @@
 import React from "react";
-import io from "socket.io-client";
-import { API_URL } from "../config/api";
 import Messages from "../components/Messages";
 import ChatInput from "../components/ChatInput";
-import ChannelList from './ChannelList';
 import "../css/App.scss";
 import "../css/Chat.scss";
-import "../css/ChannelList.scss"
 import { withRouter } from "react-router-dom";
 
-// setup connection to the server
-const socket = io(API_URL);
-
 class Chat extends React.Component {
+
   componentDidMount() {
-    this.loadChannels();
     this.setUpSocket();
   }
 
   constructor(props) {
     super();
     this.state = {
-      channels: null,
+      channels: props.location.channels,
       channel: props.location.channel,
+      socket: props.location.socket,
       username: props.username,
       messages: []
     };
-    console.log(this.state.channel.id);
     this.sendHandler = this.sendHandler.bind(this);
     this.messageSubmit = this.messageSubmit.bind(this);
   }
 
+  // functions/requests to be sent to the server go here
   setUpSocket = () => {
-    //connect to a user selected chatroom
-    socket.on("connected-to-server", () => {
-      if (this.state.channel) {
-        //this.handleChannelSelect(this.state.channel.id);
-      }
-    });
-
-    // // connect user to new chatroom
-    // socket.on("channel", channel => {
-    //   let channels = this.state.channels;
-    //   channels.forEach(c => {
-    //     if (c.id === channel.id) {
-    //       c.participants = channel.participants;
-    //     }
-    //   });
-    //   this.setState({ channels });
-    // });
+    const socket = this.state.socket;
 
     // Listen for messages from the server
     socket.on("server:message", (message) => {
       let channels = this.state.channels
-      // console.log(this.state.channel.id);
       channels.forEach(c => {
         if (c.id === message.channel_id) {
+          // if the current chat channel id matches the channel id of
+          // the message being read, add it the message array for display
           if (this.state.channel.id === message.channel_id) {
             this.addMessage(message.messageObject);
           }
@@ -65,21 +44,13 @@ class Chat extends React.Component {
     });
   }
 
-  //get list of channels
-  loadChannels = async () => {
-    fetch('http://localhost:4000/getChannels').then(async response => {
-      let data = await response.json();
-      this.setState({ channels: data.channels });
-      console.log(this.state.channels);
-    })
-  }
-
   messageSubmit(event) {
     event.preventDefault();
     console.log(event.target.value);
   }
 
   sendHandler(channel_id, message) {
+    const socket = this.state.socket;
     const messageObject = {
       username: this.props.username,
       message,
@@ -89,7 +60,6 @@ class Chat extends React.Component {
     socket.emit("client:message", { messageObject, channel_id });
 
     messageObject.fromMe = true;
-    //this.addMessage(messageObject);
   }
 
   addMessage(message) {
@@ -98,15 +68,6 @@ class Chat extends React.Component {
     messages.push(message);
     this.setState({ messages });
   }
-
-  // handleChannelSelect = id => {
-  //   let channel = this.state.channels.find(c => {
-  //     return c.id === id;
-  //   });
-  //   this.setState({ channel });
-  //   socket.emit("channel-join", id, ack => {
-  //   });
-  // }
 
   render() {
     const { data } = this.props.location

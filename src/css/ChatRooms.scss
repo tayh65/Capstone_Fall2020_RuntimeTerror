@@ -3,13 +3,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .chat_list{
     position: relative;
     display: block;
-    // background-color: black;
-    width: 1060px;
+    //background-color: black;
+    //color: white;
+    width: 500px;
     height: 500px;
     margin-top: 2.5rem;
     margin-right: 4.5rem;
@@ -18,16 +20,34 @@
     overflow: auto;
 }
 
-.join_button{
+.create_button{
+    display: inline-block;
     justify-content: center;
     position: absolute;
-    // bottom: 50px;
-    // right: 85px;
+    top: 50px;
+    right: 50%;
     width: 80px;
     height: 49px;
     background-color: black;
     color: white;
     border-radius: 15px;
+    margin-right: auto;
     //float: right;
+    cursor: ponter;
+}
+
+.join_button{
+    display: inline-block;
+    justify-content: center;
+    position: relative;
+    padding: 7px;
+    top: 18px;
+    left: 50px;
+    width: 80px;
+    height: 50px;
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    margin-right: auto;
     cursor: pointer;
 }

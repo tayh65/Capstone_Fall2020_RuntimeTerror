@@ -22,10 +22,11 @@ class Chat extends React.Component {
     super();
     this.state = {
       channels: null,
-      channel: null,
+      channel: props.location.channel,
       username: props.username,
       messages: []
     };
+    console.log(this.state.channel.id);
     this.sendHandler = this.sendHandler.bind(this);
     this.messageSubmit = this.messageSubmit.bind(this);
   }
@@ -34,28 +35,28 @@ class Chat extends React.Component {
     //connect to a user selected chatroom
     socket.on("connected-to-server", () => {
       if (this.state.channel) {
-        this.handleChannelSelect(this.state.channel.id);
+        //this.handleChannelSelect(this.state.channel.id);
       }
     });
 
-    // connect user to new chatroom
-    socket.on("channel", channel => {
-      let channels = this.state.channels;
-      channels.forEach(c => {
-        if (c.id === channel.id) {
-          c.participants = channel.participants;
-        }
-      });
-      this.setState({ channels });
-    });
+    // // connect user to new chatroom
+    // socket.on("channel", channel => {
+    //   let channels = this.state.channels;
+    //   channels.forEach(c => {
+    //     if (c.id === channel.id) {
+    //       c.participants = channel.participants;
+    //     }
+    //   });
+    //   this.setState({ channels });
+    // });
 
     // Listen for messages from the server
     socket.on("server:message", (message) => {
       let channels = this.state.channels
-      //console.log(this.state.channel.id);
+      // console.log(this.state.channel.id);
       channels.forEach(c => {
         if (c.id === message.channel_id) {
-          if(this.state.channel.id == message.channel_id){
+          if (this.state.channel.id === message.channel_id) {
             this.addMessage(message.messageObject);
           }
         }
@@ -98,20 +99,21 @@ class Chat extends React.Component {
     this.setState({ messages });
   }
 
-  handleChannelSelect = id => {
-    let channel = this.state.channels.find(c => {
-      return c.id === id;
-    });
-    this.setState({ channel });
-    socket.emit("channel-join", id, ack => {
-    });
-  }
+  // handleChannelSelect = id => {
+  //   let channel = this.state.channels.find(c => {
+  //     return c.id === id;
+  //   });
+  //   this.setState({ channel });
+  //   socket.emit("channel-join", id, ack => {
+  //   });
+  // }
 
   render() {
+    const { data } = this.props.location
     return (
       <div className="chat">
         <h1 className="chat__pageTitle">Welcome to Chat!</h1>
-        <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+        {/* <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} /> */}
         <div className="chat__sectionContainer">
           <div className="chat__formSection">
             <Messages messages={this.state.messages} />

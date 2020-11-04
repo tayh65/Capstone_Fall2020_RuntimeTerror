@@ -1,0 +1,33 @@
+.chatrooms{
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat_list{
+    position: relative;
+    display: block;
+    // background-color: black;
+    width: 1060px;
+    height: 500px;
+    margin-top: 2.5rem;
+    margin-right: 4.5rem;
+    margin-left: 4.5rem;
+    border-radius: 15px;
+    overflow: auto;
+}
+
+.join_button{
+    justify-content: center;
+    position: absolute;
+    // bottom: 50px;
+    // right: 85px;
+    width: 80px;
+    height: 49px;
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    //float: right;
+    cursor: pointer;
+}

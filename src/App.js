@@ -34,6 +34,10 @@ function App() {
             <Route path="/success">
               <SuccessPage />
             </Route>
+            <Route path= "/chatrooms">
+              {/* <Chat/> */}
+              <ChatRoomsPage/>
+            </Route>
             <Route path= "/chat">
               <Chat/>
               {/* <ChatRoomsPage/> */}

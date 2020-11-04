@@ -5,6 +5,7 @@ import Login from "./views/Login";
 import Profile from "./views/Profile";
 import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
+import ChatRoomsPage from "./views/ChatRoomsPage";
 import Chat from "./views/Chat";
 import NavBar from "./components/NavBar.component";
 
@@ -35,6 +36,7 @@ function App() {
             </Route>
             <Route path= "/chat">
               <Chat/>
+              {/* <ChatRoomsPage/> */}
             </Route>
           </Switch>
         </Router>

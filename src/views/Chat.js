@@ -46,7 +46,6 @@ class Chat extends React.Component {
 
   messageSubmit(event) {
     event.preventDefault();
-    console.log(event.target.value);
   }
 
   sendHandler(channel_id, message) {
@@ -77,7 +76,7 @@ class Chat extends React.Component {
         {/* <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} /> */}
         <div className="chat__sectionContainer">
           <div className="chat__formSection">
-            <Messages messages={this.state.messages} />
+=            <Messages messages={this.state.messages} />
           </div>
         </div>
         <ChatInput onSend={this.sendHandler} channel={this.state.channel} />

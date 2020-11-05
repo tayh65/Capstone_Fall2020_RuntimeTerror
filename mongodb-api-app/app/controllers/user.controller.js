@@ -86,10 +86,9 @@ exports.login = async (req, res) => {
           (err, token) => {
             if (err) console.error("There is some error in token", err);
             else {
-              res.json({
-                success: true,
-                token: `${token}`,
-              });
+              payload.token = token;
+
+              res.json(payload);
             }
           }
         );
@@ -164,7 +163,6 @@ exports.update = async (req, res) => {
         } );
         newUser.username = req.body.username;
       }
-      console.log(newUser);
       User.updateOne(user, newUser)
         .then(newUserData => {
           res.status(200).json(newUserData);

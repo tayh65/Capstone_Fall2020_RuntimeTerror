@@ -7,33 +7,88 @@ import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
 import ChatRoomsPage from "./views/ChatRoomsPage";
 import Chat from "./views/Chat";
+import Search from "./views/Search";
 import NavBar from "./components/NavBar.component";
-
+import { Redirect } from "react-router-dom";
+import { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-function App() {
-  return (
-    <div className="App">
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      sessionToken: "",
+      isLoggedIn: true,
+      user: {},
+    };
+  }
+
+  componentDidMount() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    let token = "";
+    if (user != null) {
+      token = user.token;
+    }
+
+    if (token && !this.state.sessionToken) {
+      this.setState({ user: user });
+      this.setState({ isLoggedIn: true });
+    } else {
+      localStorage.setItem("isLoggedIn", false);
+    }
+  }
+
+  setUserState = (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("isLoggedIn", true);
+    this.setState({ user: user });
+    this.setState({ isLoggedIn: true });
+  };
+
+  logout = () => {
+    this.setState({
+      sessionToken: "",
+      user: {},
+      isLoggedIn: false,
+    });
+    localStorage.clear();
+  };
+
+  render() {
+    let isLoggedIn = this.state.isLoggedIn;
+    let profileRoute;
+    let chatRoute;
+    let searchRoute;
+
+    if (isLoggedIn) {
+      profileRoute = (<Profile clickLogout={this.logout}/>);
+      chatRoute = (<Chat/>);
+      searchRoute = (<Search/>);
+    }
+    else if(!isLoggedIn){
+      profileRoute = (<Redirect to="/login" />);
+      chatRoute = (<Redirect to="/login" />);
+      searchRoute = (<Redirect to="/login" />);
+    }
+    return (
+      <div className="App">
         <Router>
-          <NavBar />
+          <NavBar clickLogout={this.logout} />
           <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
             <Route path="/home">
-              <Home />
+              <Home isLoggedIn={isLoggedIn} clickLogout={this.logout} />
             </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
+            <Route path="/profile">{profileRoute}</Route>
             <Route path="/register">
-              <Register />
+              <Register clickLogout={this.logout}/>
             </Route>
             <Route path="/login">
-              <Login />
+              <Login setUser={this.setUserState} />
             </Route>
             <Route path="/success">
-              <SuccessPage />
+              {<SuccessPage />}
             </Route>
+            <Route path="/chat">
             <Route path= "/chatrooms">
               {/* <Chat/> */}
               <ChatRoomsPage/>
@@ -45,9 +100,9 @@ function App() {
           </Switch>
         </Router>
         <div className="App__divider"></div>
-
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;

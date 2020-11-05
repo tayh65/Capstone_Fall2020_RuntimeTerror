@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../css/App.scss";
 import "../css/Login.css";
 import { coffeeMug_logo } from "../assets/images";
@@ -33,16 +33,16 @@ class Login extends Component {
     api
       .post(`${API_URL}/api/users/login`, payload)
       .then((res) => {
-        console.log(res);
         if (res) {
           alert("Login Successful!");
+          this.props.setUser(res.data);
             this.props.history.push("/home");
-            this.setState({ user: res.data });
-            localStorage.setItem('user', res.data)
         }
       })
       .catch((err) => {
-        alert("Wrong Credentials, please try again", err);
+        if(err){
+          alert(err);
+        }
       });
   }
 
@@ -58,13 +58,14 @@ class Login extends Component {
                 src={coffeeMug_logo}
                 alt="logo"
               ></img>
-              <div className="login__form">
+              <form className="login__form" onSubmit={this.handleSubmit}>
                 <i className="login__icon material-icons">person</i>
                 <input
                   className="login__input"
                   type="text"
                   placeholder="Username"
                   onChange={this.usernameUpdated}
+                  required
                 ></input>
                 <i className="login__icon material-icons">lock</i>
                 <input
@@ -72,12 +73,13 @@ class Login extends Component {
                   type="text"
                   placeholder="Password"
                   onChange={this.passwordUpdated}
+                  required
                 ></input>
-                <div className="login__loginButton" onClick={this.handleSubmit}>
+                <button type="submit" className="login__loginButton">
                   <p className="login__buttonLabel">Sign In</p>
-                </div>
+                </button>
                 <a href="/register">Not a Member?</a>
-              </div>
+              </form>
             </div>
           </div>
         </div>

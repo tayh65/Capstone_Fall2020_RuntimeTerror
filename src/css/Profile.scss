@@ -7,7 +7,8 @@
     font-family: 'Lobster Two', cursive;
     font-weight: normal;
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 1rem;
+    margin-left: 8rem;
     font-size: 50px;
 }
 
@@ -45,20 +46,28 @@
     width: 895px;
 }
 
+.profile__sectionTitle {
+    color: white;
+    font-size: 20px;
+    margin-top: 3rem;
+}
+
 .profile__subSectionTitle {
     position: relative;
     color: white;
     top: 25px;
     margin-bottom: 3rem;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .profile__subSectionContent,
 a {
-    color: white;
+    color: black;
     margin: 2rem 1rem 2rem 0;
     font-size: 18px;
     text-decoration: none;
+    border-radius: 15px;
 }
 
 .profile__form {
@@ -166,4 +175,10 @@ a {
     margin-right: 5rem;
     font-weight: normal;
     color: white;
+}
+
+.profile__subSetionLabel {
+    color: white;
+    font-size: 20px;
+    margin-top: 3rem;
 }

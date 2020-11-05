@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+// const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require('passport');
 const socketIo = require("socket.io");
@@ -21,9 +21,9 @@ var STATIC_CHANNELS = [{
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:4000"
-};
+// var corsOptions = {
+//   origin: "http://localhost:4000"
+// };
 
 //app.use(cors(corsOptions));
 app.use(function (req, res, next) {

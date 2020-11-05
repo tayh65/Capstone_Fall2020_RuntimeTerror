@@ -1,12 +1,12 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
+// const passport = require("passport");
 let {
   validateRegisterInput,
   validateLoginInput,
 } = require("../../validateInput");
-const { useReducer } = require("react");
+// const { useReducer } = require("react");
 
 // Create and Save a new User
 exports.create = async (req, res) => {
@@ -127,53 +127,54 @@ exports.findOne = async (req, res) => {
 
 // Update a User by the id in the request
 exports.update = async (req, res) => {
-  await User.findById(req.params.id)
-    .then(user => {
-      let newUser = {_id: req.params.id};
-      if (req.body.fname) newUser.fname = req.body.fname;
-      if (req.body.lname) newUser.lname = req.body.lname;
-      if (req.body.email) {
-        User.findOne({ email: req.body.email })
-          .then((data) => {
-            if (data) {
-              res.status(400).json("Invalid User email.");
-            }
-          });
-        newUser.email = req.body.email;
-      }
-      if (req.body.password) {
-        let newPassword = req.body.password;
-        bcrypt.genSalt(10, (err, salt) => {
+  let newUserData = {_id: req.params.id};
+  if (req.body.fname) newUserData.fname = req.body.fname;
+  if (req.body.lname) newUserData.lname = req.body.lname;
+  if (req.body.email) {
+    User.findOne({ email: req.body.email })
+      .then(data => {
+        if (data) {
+          res.status(400).json("Invalid User email.");
+        }
+      })
+      .catch(err => {
+        res.status(500).json("Error validating email");
+      });
+    newUserData.email = req.body.email;
+  }
+  if (req.body.password) {
+    let newPassword = req.body.password;
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) console.error("There was an error", err);
+      else {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
           if (err) console.error("There was an error", err);
           else {
-            bcrypt.hash(req.body.password, salt, (err, hash) => {
-              if (err) console.error("There was an error", err);
-              else {
-                newPassword = hash;
-              }
-            });
+            newPassword = hash;
           }
         });
-        if(newPassword) newUser.password = newPassword;
-      };
-      if(req.body.username) {
-        User.findOne( {username: req.body.username}, (err, data) => {
-          if(err) res.status(500).json(err);
-          if(data) res.status(400).json("Username already exists.");
-        } );
-        newUser.username = req.body.username;
       }
-      User.updateOne(user, newUser)
-        .then(newUserData => {
-          res.status(200).json(newUserData);
-        })
-        .catch(err => {
-          res.status(500).json(err);
-        });
-  })
-  .catch(err => {
-    res.status(500).json("Could not find specified user.");
-  });
+    });
+    newUserData.password = newPassword;
+  };
+  if(req.body.username) {
+    User.findOne( {username: req.body.username}, (err, data) => {
+      if(err) res.status(500).json(err);
+      if(data) res.status(400).json("Username already exists.");
+    } );
+    newUserData.username = req.body.username;
+  }
+  if(req.body.friends) newUserData.friends = req.body.friends;
+
+  // update user with newUserData
+  await User.findByIdAndUpdate( newUserData._id,  
+    newUserData)
+    .then(updatedUser => {
+      res.status(200).json(updatedUser);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 }
 
 // Delete a User with the specified id in the request

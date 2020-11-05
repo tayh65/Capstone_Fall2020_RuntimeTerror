@@ -75,7 +75,8 @@ exports.login = async (req, res) => {
           lname: user.lname,
           username: user.username,
           password: user.password,
-          email: user.email
+          email: user.email,
+          friends: user.friends
         };
         jwt.sign(
           payload,
@@ -125,6 +126,27 @@ exports.findOne = async (req, res) => {
     });
 };
 
+// update password independently for hashing
+async function updatePassword(body) {
+  let password = body.password;
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) console.error("There was an error", err);
+    else {
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) console.error("There was an error", err);
+        else {
+          password = hash;
+          User.findByIdAndUpdate( body._id,  
+            password, () => { console.log("Updated user password") } )
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      });
+    }
+  });
+};
+
 // Update a User by the id in the request
 exports.update = async (req, res) => {
   let newUserData = {_id: req.params.id};
@@ -142,21 +164,7 @@ exports.update = async (req, res) => {
       });
     newUserData.email = req.body.email;
   }
-  if (req.body.password) {
-    let newPassword = req.body.password;
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) console.error("There was an error", err);
-      else {
-        bcrypt.hash(req.body.password, salt, (err, hash) => {
-          if (err) console.error("There was an error", err);
-          else {
-            newPassword = hash;
-          }
-        });
-      }
-    });
-    newUserData.password = newPassword;
-  };
+  if (req.body.password) updatePassword(req.body);
   if(req.body.username) {
     User.findOne( {username: req.body.username}, (err, data) => {
       if(err) res.status(500).json(err);

@@ -27,7 +27,8 @@ const UserSchema = new Schema({
     trim: true,
     type: String,
     unique: true
-  }
+  },
+  friends: [{ type: Schema.Types.ObjectId, ref: 'Friends'}]
 });
 
 const User = model("User", UserSchema);

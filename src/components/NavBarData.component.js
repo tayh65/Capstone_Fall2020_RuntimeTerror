@@ -20,7 +20,7 @@ export const SideBarData = [
 
     {
         title: 'Chat',
-        path: '/chat',
+        path: '/chatrooms',
         icon: <AIIcons.AiOutlineWechat/>,
         cName: 'nav_text'
     },

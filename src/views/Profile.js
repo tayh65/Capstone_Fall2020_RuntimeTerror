@@ -4,7 +4,7 @@ import "../css/Profile.scss";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
-import { Alert } from "reactstrap";
+// import { Alert } from "reactstrap";
 
 class Profile extends Component {
   constructor() {
@@ -15,6 +15,7 @@ class Profile extends Component {
       lname: "",
       username: "",
       email: "",
+      friends: [],
       view: "",
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
@@ -22,6 +23,7 @@ class Profile extends Component {
     this.usernameUpdated = this.usernameUpdated.bind(this);
     this.passwordUpdated = this.passwordUpdated.bind(this);
     this.emailUpdated = this.emailUpdated.bind(this);
+    this.showFriends = this.showFriends.bind(this);
     this.editAccount = this.editAccount.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
@@ -35,6 +37,7 @@ class Profile extends Component {
       this.setState({ lname: user.lname });
       this.setState({ username: user.username });
       this.setState({ email: user.email });
+      this.setState({ friends: user.friends });
 
       // document.getElementById("fname").value = user.fname;
     }
@@ -60,6 +63,15 @@ class Profile extends Component {
     this.setState({ email: event.target.value });
   }
 
+  friendsUpdated(event) {
+    this.setState({ friends: event.target.value });
+  }
+
+  showFriends(event) {
+    event.preventDefault();
+    this.setState({ view: "friends" });
+  }
+
   async editAccount(event) {
     event.preventDefault();
     let payload = {
@@ -68,6 +80,7 @@ class Profile extends Component {
       username: this.state.username,
       password: this.state.password,
       email: this.state.email,
+      friends: this.state.friends
     };
 
     this.setState({ view: "edit" });
@@ -182,13 +195,24 @@ class Profile extends Component {
           <h3
             className="profile__subSectionContent"
             onClick={() => this.setState({ view: "" })}
-            >
+          >
             No
           </h3>
         </div>
       );
     } else if (display === "friends") {
-      View = <div className="profile__sectionTitle">Coming Soon!</div>;
+      View = (
+        <div className="profile__sectionTitle">
+          Friend List:
+          <h3 className="profile__subSetionLabel">
+            Username:
+          </h3>
+          <pre className="profile__subSetionLabel">
+            Name:
+          </pre>
+        </div>
+
+      )
     } else {
       View = (
         <div>
@@ -219,8 +243,14 @@ class Profile extends Component {
               My Account
             </h2>
             <i className="profile__searchIcon material-icons">search</i>
-            <a className="profile__link" href="/profile/edit">
-              <h3 className="profile__subSectionContent">Friends</h3>
+            <a className="profile__link" href="/profile">
+              <h3 
+                className="profile__subSectionContent"
+                onClick={this.showFriends}
+                >
+                  
+                Friends
+              </h3>
             </a>
             <a className="profile__link" href="/profile">
               <h3

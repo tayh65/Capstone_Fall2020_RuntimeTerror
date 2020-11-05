@@ -14,15 +14,15 @@ class FriendList extends React.Component {
 
     render() {
         // Loop through all the friends in the state and add to view
-        const friends = this.props.friends.map((friend, i) => {
-            return (
-                <Friend
-                    key={i}
-                    username={friend.username}
-                    fname={friend.fname}
-                    lname={friend.lname} />
-            );
-        });
+         const friends = []//this.props.friends.map((friend, i) => {
+        //     return (
+        //         <Friend
+        //             key={i}
+        //             username={friend.username}
+        //             fname={friend.fname}
+        //             lname={friend.lname} />
+        //     );
+        // });
         return (
             <div className='friends' id='friendList'>
                 { friends }

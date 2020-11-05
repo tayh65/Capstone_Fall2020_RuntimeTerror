@@ -2,7 +2,7 @@ import React from 'react';
 
 class Friend extends React.Component {
   render() {
-
+    
 
     return (
       <div className='friend'>

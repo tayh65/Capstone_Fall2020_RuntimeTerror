@@ -3,12 +3,14 @@ import React from 'react';
 class ChatInput extends React.Component {
   constructor(props) {
     super();
-    this.state = { chatInput: '' };
+    this.state = {
+      chatInput: '',
+    };
 
     this.submitHandler = this.submitHandler.bind(this);
     this.textChangeHandler = this.textChangeHandler.bind(this);
   }
-  
+
   submitHandler(event) {
     // Stop the form from refreshing the page on submit
     event.preventDefault();
@@ -17,13 +19,13 @@ class ChatInput extends React.Component {
     this.setState({ chatInput: '' });
 
     // Call the onSend callback with the chatInput message
-    this.props.onSend(this.state.chatInput);
+    this.props.onSend(this.props.channel.id, this.state.chatInput);
   }
 
-  textChangeHandler(event)  {
+  textChangeHandler(event) {
     this.setState({ chatInput: event.target.value });
   }
-
+  
   render() {
     return (
       <form className="chat-input" onSubmit={this.submitHandler}>

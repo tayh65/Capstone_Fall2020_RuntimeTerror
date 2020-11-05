@@ -1,7 +1,6 @@
 import React from "react";
 import Message from './Message';
 import "../css/App.scss";
-import "../css/Messages.scss";
 import { withRouter } from "react-router-dom";
 
 class Messages extends React.Component {

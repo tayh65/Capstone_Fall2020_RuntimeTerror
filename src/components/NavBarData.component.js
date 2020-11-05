@@ -6,7 +6,7 @@ import * as AIIcons from 'react-icons/ai'
 export const SideBarData = [
     {
         title: 'Home',
-        path: '/',
+        path: '/home',
         icon: <AIIcons.AiFillHome/>,
         cName: 'nav_text'
     },
@@ -20,7 +20,7 @@ export const SideBarData = [
 
     {
         title: 'Chat',
-        path: '/chat',
+        path: '/chatrooms',
         icon: <AIIcons.AiOutlineWechat/>,
         cName: 'nav_text'
     },
@@ -29,13 +29,6 @@ export const SideBarData = [
         title: 'Profile',
         path: '/profile',
         icon: <AIIcons.AiOutlineUser/>,
-        cName: 'nav_text'
-    },
-
-    {
-        title: 'Login',
-        path: '/login',
-        icon: <AIIcons.AiOutlineLogin/>,
         cName: 'nav_text'
     },
 
@@ -51,5 +44,5 @@ export const SideBarData = [
         path: '/register',
         icon: <AIIcons.AiOutlineUserAdd/>,
         cName: 'nav_text'
-    }
+    },
 ]

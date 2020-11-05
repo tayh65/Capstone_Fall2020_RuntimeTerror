@@ -88,7 +88,6 @@ class App extends Component {
             <Route path="/success">
               {<SuccessPage />}
             </Route>
-            <Route path="/chat">
             <Route path= "/chatrooms">
               {/* <Chat/> */}
               <ChatRoomsPage/>

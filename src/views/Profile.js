@@ -31,15 +31,20 @@ class Profile extends Component {
 
   componentDidMount() {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      this.setState({ _id: user.id });
-      this.setState({ fname: user.fname });
-      this.setState({ lname: user.lname });
-      this.setState({ username: user.username });
-      this.setState({ email: user.email });
-      this.setState({ friends: user.friends });
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "false" || isLoggedIn == null) {
+      this.props.history.push("/login");
+    }
 
-      // document.getElementById("fname").value = user.fname;
+    if (user) {
+      this.setState({
+        _id: user.id,
+        fname: user.fname,
+        lname: user.lname,
+        username: user.username,
+        email: user.email,
+        friends: user.friends,
+      });
     }
   }
 
@@ -80,16 +85,18 @@ class Profile extends Component {
       username: this.state.username,
       password: this.state.password,
       email: this.state.email,
-      friends: this.state.friends
+      friends: this.state.friends,
     };
-
-    this.setState({ view: "edit" });
-
-    /*api
-      .post(`${API_URL}/api/users/add`, payload)
+    const user = JSON.parse(localStorage.getItem("user"));
+    let id = user._id;
+    api
+      .put(`${API_URL}/api/users/edit/${id}`, payload)
       .then((res) => {
         if (res.data) {
-          this.props.history.push("/success");
+          alert("Account updated!");
+          this.props.setUser(res.data);
+          this.setState({ _id: res.data._id });
+          this.setState({ view: "" });
         } else {
           alert("Oops, make sure the information you entered is correct!");
         }
@@ -97,7 +104,7 @@ class Profile extends Component {
       .catch((err) => {
         console.error(err);
         alert(err);
-      });*/
+      });
   }
 
   confirmDelete(event) {
@@ -107,12 +114,14 @@ class Profile extends Component {
 
   async deleteAccount(event) {
     event.preventDefault();
-    let id = this.state._id;
+    const user = JSON.parse(localStorage.getItem("user"));
+    let id = user._id;
     api
       .delete(`${API_URL}/api/users/remove/${id}`)
       .then(() => {
         alert("Account Deleted");
         this.props.clickLogout();
+        this.props.history.push("/login");
       })
       .catch((err) => {
         console.error(err);
@@ -125,7 +134,7 @@ class Profile extends Component {
     let View;
     if (display === "edit") {
       View = (
-        <form>
+        <form onSubmit={this.editAccount}>
           <label className="profile__formLabel" htmlFor="firstname">
             First Name
           </label>
@@ -177,42 +186,37 @@ class Profile extends Component {
             required
             onChange={this.emailUpdated}
           ></input>
-          <div className="profile__profileButton" onClick={this.handleSubmit}>
+          <button type="submit" className="profile__profileButton">
             <h2 className="profile__buttonLabel">Save</h2>
-          </div>
+          </button>
         </form>
       );
     } else if (display === "delete") {
       View = (
-        <div className="profile__sectionTitle">
-          Are you sure you want to delete your account?
-          <h3
-            className="profile__subSectionContent"
+        <div className="profile__sectionButtons">
+          <h2 className="profile__sectionTitle"> Are you sure you want to delete your account?</h2>
+          <button
+            className="profile__confirmButton yes"
             onClick={this.deleteAccount}
           >
             Yes
-          </h3>
-          <h3
-            className="profile__subSectionContent"
+          </button>
+          <button
+            className="profile__confirmButton no"
             onClick={() => this.setState({ view: "" })}
           >
             No
-          </h3>
+          </button>
         </div>
       );
     } else if (display === "friends") {
       View = (
         <div className="profile__sectionTitle">
           Friend List:
-          <h3 className="profile__subSetionLabel">
-            Username:
-          </h3>
-          <pre className="profile__subSetionLabel">
-            Name:
-          </pre>
+          <h3 className="profile__subSetionLabel">Username:</h3>
+          <pre className="profile__subSetionLabel">Name:</pre>
         </div>
-
-      )
+      );
     } else {
       View = (
         <div>
@@ -244,18 +248,20 @@ class Profile extends Component {
             </h2>
             <i className="profile__searchIcon material-icons">search</i>
             <a className="profile__link" href="/profile">
-              <h3 
+              <h3
                 className="profile__subSectionContent"
                 onClick={this.showFriends}
-                >
-                  
+              >
                 Friends
               </h3>
             </a>
             <a className="profile__link" href="/profile">
               <h3
                 className="profile__subSectionContent"
-                onClick={this.editAccount}
+                onClick={(event) => {
+                  event.preventDefault();
+                  this.setState({ view: "edit" });
+                }}
               >
                 Edit Account
               </h3>

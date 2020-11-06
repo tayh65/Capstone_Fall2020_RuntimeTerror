@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/App.scss";
-import "../css/Login.css";
+import "../css/Login.scss";
 import { coffeeMug_logo } from "../assets/images";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
@@ -30,6 +30,7 @@ class Login extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     let payload = this.state;
+    console.log(payload);
     api
       .post(`${API_URL}/api/users/login`, payload)
       .then((res) => {

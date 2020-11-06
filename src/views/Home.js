@@ -19,7 +19,6 @@ class Home extends Component {
   render() {
     let isLoggedIn = this.state.isLoggedIn;
     let Section;
-
     if (isLoggedIn === "true") {
       Section = (
         <div

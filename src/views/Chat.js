@@ -69,7 +69,7 @@ class Chat extends React.Component {
   }
 
   render() {
-    const { data } = this.props.location
+    //const { data } = this.props.location
     return (
       <div className="chat">
         <h1 className="chat__pageTitle">Welcome to Chat!</h1>

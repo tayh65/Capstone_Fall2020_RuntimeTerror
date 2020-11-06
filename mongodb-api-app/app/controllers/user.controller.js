@@ -125,6 +125,25 @@ exports.findOne = async (req, res) => {
     });
 };
 
+// Find users which search term matches username or email
+// Does adhere to partial matches
+exports.searchUsers = async (req, res) => {
+  let searchTerm = req.params.searchTerm.toString();
+  let regex = new RegExp(searchTerm,'i');
+
+  await User.find({ $and: [ { $or: [{username: regex },{email: regex}] }] } 
+    )
+    .then((data) => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving User data.",
+      });
+    });
+};
+
 // update password independently for hashing
 async function updatePassword(body, id) {
   let password = body.password;

@@ -7,7 +7,7 @@ import { api, API_URL } from "../config/api";
 // import { Alert } from "reactstrap";
 
 class Profile extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       _id: "",
@@ -15,8 +15,9 @@ class Profile extends Component {
       lname: "",
       username: "",
       email: "",
-      friends: [String],
+      friends: props.friends,
       view: "",
+      friendDetails: []
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
     this.lastNameUpdated = this.lastNameUpdated.bind(this);
@@ -71,27 +72,31 @@ class Profile extends Component {
   populateFriends(event) {
     event.preventDefault();
 
-    let friendDetails = [];
-    let friends = this.state.friends;
-    friends.forEach( (friendID) => {
-      let data = {};
-      api
-        .get(`${API_URL}/api/users/${friendID}`)
-        .then((res) => {
-          data = {
-            _id: res.data._id,
-            username: res.data.username,
-            fname: res.data.fname,
-            lname: res.data.lname
-          }
-          friendDetails.push(data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
+    let friendDetails = this.state.friendDetails;
+    this.state.friends.forEach( (friendID) => {
+      let alreadyPopulated = friendDetails.find(friend => friend._id === friendID);
 
-    this.setState({ view: "friends", friendDetails: friendDetails });
+      if(!alreadyPopulated) {
+        let data = {};
+        api
+            .get(`${API_URL}/api/users/${friendID}`)
+            .then((res) => {
+              data = {
+                _id: res.data._id,
+                username: res.data.username,
+                fname: res.data.fname,
+                lname: res.data.lname
+              }
+              friendDetails.push(data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+      }//close if
+    });//close forEach
+      
+    console.log(friendDetails)
+    this.setState({ view: "friends", friendDetails: friendDetails});
   }
 
   async editAccount(event) {
@@ -226,7 +231,13 @@ class Profile extends Component {
       View = (
         <div className="profile__sectionTitle">
           Friend List:
-          
+          <div className="profile__friendListSection">
+            <ul>
+              {this.state.friendDetails.map(friend => (
+                <li key={friend._id}>{friend.username}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
       )
@@ -265,7 +276,6 @@ class Profile extends Component {
                 className="profile__subSectionContent"
                 onClick={this.populateFriends}
               >
-                  
                 Friends
               </h3>
             </a>

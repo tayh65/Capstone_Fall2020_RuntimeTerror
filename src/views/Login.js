@@ -30,7 +30,6 @@ class Login extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     let payload = this.state;
-    console.log(payload);
     api
       .post(`${API_URL}/api/users/login`, payload)
       .then((res) => {

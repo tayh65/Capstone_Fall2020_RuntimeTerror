@@ -7,7 +7,7 @@ import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
 import ChatRoomsPage from "./views/ChatRoomsPage";
 import Chat from "./views/Chat";
-//import Search from "./views/Search";
+import Search from "./views/Search";
 import NavBar from "./components/NavBar.component";
 import { Redirect } from "react-router-dom";
 import { Component } from "react";
@@ -83,6 +83,9 @@ class App extends Component {
               <Login setUser={this.setUserState} />
             </Route>
             <Route path="/success">{<SuccessPage />}</Route>
+            <Route path="/search">
+              <Search/>
+            </Route>
             <Route path="/chatrooms">
               {/* <Chat/> */}
               <ChatRoomsPage />

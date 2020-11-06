@@ -48,7 +48,7 @@ class ChatRoomsPage extends React.Component {
         fetch("http://localhost:4000/getChannels").then(async response => {
             let data = await response.json();
             this.setState({ channels: data.channels });
-            console.log(this.state.channels);
+            // console.log(this.state.channels);
         })
     }
 
@@ -58,7 +58,7 @@ class ChatRoomsPage extends React.Component {
             return c.id === id;
         });
         this.setState({ channel });
-        this.state.channelConnected = true;
+        this.setState({channelConnected: true});
         socket.emit("channel-join", id, ack => {
         });
     }

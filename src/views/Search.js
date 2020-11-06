@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/App.scss";
 import "../css/SuccessPage.css";
-import { success_logo } from "../assets/images";
+// import { success_logo } from "../assets/images";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 

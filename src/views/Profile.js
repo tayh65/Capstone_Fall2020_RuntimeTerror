@@ -15,7 +15,7 @@ class Profile extends Component {
       lname: "",
       username: "",
       email: "",
-      friends: [],
+      friends: [String],
       view: "",
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
@@ -23,7 +23,7 @@ class Profile extends Component {
     this.usernameUpdated = this.usernameUpdated.bind(this);
     this.passwordUpdated = this.passwordUpdated.bind(this);
     this.emailUpdated = this.emailUpdated.bind(this);
-    this.showFriends = this.showFriends.bind(this);
+    this.populateFriends = this.populateFriends.bind(this);
     this.editAccount = this.editAccount.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
@@ -38,6 +38,7 @@ class Profile extends Component {
       this.setState({ username: user.username });
       this.setState({ email: user.email });
       this.setState({ friends: user.friends });
+      this.setState({ friendDetails: []});
 
       // document.getElementById("fname").value = user.fname;
     }
@@ -67,37 +68,58 @@ class Profile extends Component {
     this.setState({ friends: event.target.value });
   }
 
-  showFriends(event) {
+  populateFriends(event) {
     event.preventDefault();
-    this.setState({ view: "friends" });
+
+    let friendDetails = [];
+    let friends = this.state.friends;
+    friends.forEach( (friendID) => {
+      let data = {};
+      api
+        .get(`${API_URL}/api/users/${friendID}`)
+        .then((res) => {
+          data = {
+            _id: res.data._id,
+            username: res.data.username,
+            fname: res.data.fname,
+            lname: res.data.lname
+          }
+          friendDetails.push(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+
+    this.setState({ view: "friends", friendDetails: friendDetails });
   }
 
   async editAccount(event) {
     event.preventDefault();
-    let payload = {
-      fname: this.state.fname,
-      lname: this.state.lname,
-      username: this.state.username,
-      password: this.state.password,
-      email: this.state.email,
-      friends: this.state.friends
-    };
+    // let payload = {
+    //   fname: this.state.fname,
+    //   lname: this.state.lname,
+    //   username: this.state.username,
+    //   password: this.state.password,
+    //   email: this.state.email,
+    //   friends: this.state.friends
+    // };
 
     this.setState({ view: "edit" });
 
-    /*api
-      .post(`${API_URL}/api/users/add`, payload)
-      .then((res) => {
-        if (res.data) {
-          this.props.history.push("/success");
-        } else {
-          alert("Oops, make sure the information you entered is correct!");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert(err);
-      });*/
+    // api
+    //   .post(`${API_URL}/api/users/edit/${this.state._id}`, payload)
+    //   .then((res) => {
+    //     if (res.data) {
+    //       this.props.history.push("/success");
+    //     } else {
+    //       alert("Oops, make sure the information you entered is correct!");
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     alert(err);
+    //   });
   }
 
   confirmDelete(event) {
@@ -204,12 +226,7 @@ class Profile extends Component {
       View = (
         <div className="profile__sectionTitle">
           Friend List:
-          <h3 className="profile__subSetionLabel">
-            Username:
-          </h3>
-          <pre className="profile__subSetionLabel">
-            Name:
-          </pre>
+          
         </div>
 
       )
@@ -246,8 +263,8 @@ class Profile extends Component {
             <a className="profile__link" href="/profile">
               <h3 
                 className="profile__subSectionContent"
-                onClick={this.showFriends}
-                >
+                onClick={this.populateFriends}
+              >
                   
                 Friends
               </h3>

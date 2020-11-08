@@ -25,16 +25,13 @@ class App extends Component {
 
   componentDidMount() {
     const user = JSON.parse(localStorage.getItem("user"));
-    let token = "";
-    if (user != null) {
-      token = user.token;
-    }
-
-    if (token && !this.state.sessionToken) {
+    //let token = "";
+    if (user !== null) {
       this.setState({ user: user });
       this.setState({ isLoggedIn: true });
     } else {
       localStorage.setItem("isLoggedIn", false);
+      this.setState({ isLoggedIn: false });
     }
   }
 
@@ -56,45 +53,45 @@ class App extends Component {
 
   render() {
     let isLoggedIn = this.state.isLoggedIn;
-    let profileRoute;
-    let chatRoute;
-    let searchRoute;
 
-    if (isLoggedIn) {
-      profileRoute = (<Profile clickLogout={this.logout}/>);
-      chatRoute = (<Chat/>);
-      searchRoute = (<Search/>);
-    }
-    else if(!isLoggedIn){
-      profileRoute = (<Redirect to="/login" />);
-      chatRoute = (<Redirect to="/login" />);
-      searchRoute = (<Redirect to="/login" />);
-    }
     return (
       <div className="App">
         <Router>
           <NavBar clickLogout={this.logout} />
           <Switch>
+            <Route
+              exact
+              path="/"
+              render={() =>
+                isLoggedIn ? (
+                  <Redirect to="/login" />
+                ) : (
+                  <Redirect to="/home" />
+                )
+              }
+            />
             <Route path="/home">
               <Home isLoggedIn={isLoggedIn} clickLogout={this.logout} />
             </Route>
-            <Route path="/profile">{profileRoute}</Route>
+            <Route path="/profile">
+              <Profile setUser={this.setUserState} clickLogout={this.logout} />
+            </Route>
             <Route path="/register">
-              <Register clickLogout={this.logout}/>
+              <Register clickLogout={this.logout} />
             </Route>
             <Route path="/login">
               <Login setUser={this.setUserState} />
             </Route>
-            <Route path="/success">
-              {<SuccessPage />}
+            <Route path="/success">{<SuccessPage />}</Route>
+            <Route path="/search">
+              <Search/>
+            </Route>
+            <Route path="/chatrooms">
+              {/* <Chat/> */}
+              <ChatRoomsPage />
             </Route>
             <Route path="/chat">
-            <Route path= "/chatrooms">
-              {/* <Chat/> */}
-              <ChatRoomsPage/>
-            </Route>
-            <Route path= "/chat">
-              <Chat/>
+              <Chat />
               {/* <ChatRoomsPage/> */}
             </Route>
           </Switch>

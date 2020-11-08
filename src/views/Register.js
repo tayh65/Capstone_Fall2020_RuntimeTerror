@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/App.scss";
-import "../css/Register.css";
+import "../css/Register.scss";
 import { coffeeBag_logo } from "../assets/images";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { FaBars } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
 import { SideBarData } from './NavBarData.component';
-import "../css/NavBar.css"
+import "../css/NavBar.scss"
 import {IconContext} from 'react-icons';
 
 

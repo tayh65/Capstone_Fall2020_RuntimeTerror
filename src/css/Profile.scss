@@ -48,7 +48,7 @@
 
 .profile__sectionTitle {
     color: white;
-    font-size: 20px;
+    font-size: 25px;
     margin-top: 3rem;
 }
 
@@ -157,6 +157,7 @@ a {
     border-radius: 20px;
     margin: 1rem 7rem;
     cursor: pointer;
+    outline: none !important;
 }
 
 .profile__buttonLabel {
@@ -181,4 +182,32 @@ a {
     color: white;
     font-size: 20px;
     margin-top: 3rem;
+}
+
+.profile__sectionButtons {
+    display: inline;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    margin-top: 5rem;
+}
+
+.profile__confirmButton.yes,
+.profile__confirmButton.no {
+    display: block;
+    padding: 10px;
+    margin: 3rem auto;
+    justify-content: center;
+    background-color: green;
+    border-radius: 20px;
+    width: 150px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none !important;
+}
+
+.profile__confirmButton.no {
+    background-color: red;
 }

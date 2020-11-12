@@ -71,7 +71,7 @@ exports.login = async (req, res) => {
     bcrypt.compare(req.body.password, user.password).then((isMatch) => {
       if (isMatch) {
         const payload = {
-          id: user.id,
+          _id: user.id,
           fname: user.fname,
           lname: user.lname,
           username: user.username,
@@ -90,7 +90,6 @@ exports.login = async (req, res) => {
             if (err) console.error("There is some error in token", err);
             else {
               payload.token = token;
-
               res.json(payload);
             }
           }
@@ -128,9 +127,29 @@ exports.findOne = async (req, res) => {
     });
 };
 
+// Find users which search term matches username or email
+// Does adhere to partial matches
+exports.searchUsers = async (req, res) => {
+  let searchTerm = req.params.searchTerm.toString();
+  let regex = new RegExp(searchTerm,'i');
+
+  await User.find({ $and: [ { $or: [{username: regex },{email: regex}] }] } 
+    )
+    .then((data) => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving User data.",
+      });
+    });
+};
+
 // update password independently for hashing
-async function updatePassword(body) {
+async function updatePassword(body, id) {
   let password = body.password;
+  let userId = id;
   bcrypt.genSalt(10, (err, salt) => {
     if (err) console.error("There was an error", err);
     else {
@@ -138,20 +157,20 @@ async function updatePassword(body) {
         if (err) console.error("There was an error", err);
         else {
           password = hash;
-          User.findByIdAndUpdate( body._id,  
-            password, () => { console.log("Updated user password") } )
+          User.findByIdAndUpdate( userId,  
+            {password: password}, () => { console.log("Updated user password") } )
             .catch(err => {
               console.log(err);
             });
         }
       });
     }
-  });
-};
-
+  })
+}
 // Update a User by the id in the request
 exports.update = async (req, res) => {
   let newUserData = {_id: req.params.id};
+  console.log(newUserData);
   if (req.body.fname) newUserData.fname = req.body.fname;
   if (req.body.lname) newUserData.lname = req.body.lname;
   if (req.body.email) {
@@ -166,7 +185,9 @@ exports.update = async (req, res) => {
       });
     newUserData.email = req.body.email;
   }
-  if (req.body.password) updatePassword(req.body);
+  if (req.body.password){
+    updatePassword(req.body, newUserData._id);
+  } 
   if(req.body.username) {
     User.findOne( {username: req.body.username}, (err, data) => {
       if(err) res.status(500).json(err);
@@ -175,7 +196,6 @@ exports.update = async (req, res) => {
     newUserData.username = req.body.username;
   }
   if(req.body.friends) newUserData.friends = req.body.friends;
-
   // update user with newUserData
   await User.findByIdAndUpdate( newUserData._id,  
     newUserData)

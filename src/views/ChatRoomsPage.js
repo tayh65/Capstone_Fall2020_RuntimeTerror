@@ -13,6 +13,10 @@ class ChatRoomsPage extends React.Component {
     componentDidMount() {
         this.loadChannels();
         this.setUpSocket();
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if(isLoggedIn === "false" || isLoggedIn == null){
+          this.props.history.push("/login");
+        }
     }
 
     state = {

@@ -17,6 +17,7 @@ class Profile extends Component {
       email: "",
       friends: [],
       friendRequests: [],
+      friendRequestData: [],
       view: "",
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
@@ -28,7 +29,6 @@ class Profile extends Component {
     this.showFriendRequests = this.showFriendRequests.bind(this);
     this.acceptFriendRequest = this.acceptFriendRequest.bind(this);
     this.editAccount = this.editAccount.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
   }
 
@@ -38,33 +38,56 @@ class Profile extends Component {
     if (isLoggedIn === "false" || isLoggedIn == null) {
       this.props.history.push("/login");
     }
-
     if (user != null) {
       this.setState({
-        _id: user.id,
+        _id: user._id,
         fname: user.fname,
         lname: user.lname,
         username: user.username,
         email: user.email,
         friends: user.friends,
       });
+      this.getFriends(user.friends);
       this.getFriendRequests(user._id);
     }
-
   }
 
-  getFriendRequests(userId){
+  getFriends(friends) {
+    console.log(friends);
+    let friendList = [];
+    if (friends != null && friends.length > 0) {
+      for (let i = 0; i < friends.length; i++) {
+        api
+          .get(`${API_URL}/api/users/${friends[i]}`)
+          .then((res) => {
+            console.log();
+            friendList.push(res.data);
+            this.setState({ friends: friendList });
+          })
+          .catch((err) => {
+            if (err) {
+              alert(err);
+            }
+          });
+      }
+    }
+  }
+
+  getFriendRequests(userId) {
     let friendRequests = [];
     api
-      .get(`${API_URL}/api/friend/${userId}`)
+      .get(`${API_URL}/api/friend/to/${userId}`)
       .then((res) => {
-        for(let i = 0; i < res.data.length; i++){
-          api
-          .get(`${API_URL}/api/users/${res.data[i]}`)
-          .then((res) => {
-            friendRequests.push(res.data);
-            this.setState({ friendRequests: friendRequests });
-          });
+        if (res != null && res.data != null) {
+          this.setState({ friendRequestData: res.data });
+          for (let i = 0; i < res.data.length; i++) {
+            api
+              .get(`${API_URL}/api/users/${res.data[i].user_from}`)
+              .then((res) => {
+                friendRequests.push(res.data);
+                this.setState({ friendRequests: friendRequests });
+              });
+          }
         }
       })
       .catch((err) => {
@@ -109,7 +132,7 @@ class Profile extends Component {
   }
 
   async editAccount(event) {
-    if(event != null){
+    if (event != null) {
       event.preventDefault();
     }
     let payload = {
@@ -125,7 +148,7 @@ class Profile extends Component {
     api
       .put(`${API_URL}/api/users/edit/${id}`, payload)
       .then((res) => {
-        if (res.data) {
+        if (res != null && res.data != null) {
           alert("Account updated!");
           this.props.setUser(res.data);
           this.setState({ _id: res.data._id });
@@ -140,19 +163,49 @@ class Profile extends Component {
       });
   }
 
-   acceptFriendRequest(friends){
-    let friendArray = [];
-    friendArray.push(friends);
-    for(let i = 0; i < this.state.friends.length; i++){
-      friendArray.push(this.state.friends[i]);
+  acceptFriendRequest(friend) {
+    let friendRequestData = this.state.friendRequestData;
+    if (friendRequestData != null && friendRequestData.length > 0) {
+      friendRequestData.find((req) => {
+        if (req.user_from === friend) {
+          api
+            .put(`${API_URL}/api/friend/edit/${req._id}`, { is_accepted: true })
+            .then(() => {
+              alert("Friend request accepted!");
+              let newFriends = [];
+              newFriends.push(friend);
+              for(let i = 0; i < this.state.friends.length; i++){
+                console.log(typeof this.state.friends[i]);
+                if(typeof this.state.friends[i] === "object"){
+                  newFriends.push(this.state.friends[i]._id);
+                }
+                else{
+                  newFriends.push(this.state.friends[i]);
+                }
+              }
+              this.setState({ friends: newFriends });
+              let payload = {
+                _id: this.state._id,
+                fname: this.state.fname,
+                lname: this.state.lname,
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email,
+                friends: newFriends,
+              };
+              this.props.setUser(payload);
+              this.getFriends(newFriends);
+              this.getFriendRequests(payload._id);
+              this.setState({ view: "" });
+            })
+            .catch((err) => {
+              if (err) {
+                alert(err);
+              }
+            });
+        }
+      });
     }
-    this.setState({ friends: friendArray });
-    this.editAccount();
-  }
-
-  confirmDelete(event) {
-    event.preventDefault();
-    this.setState({ view: "delete" });
   }
 
   async deleteAccount(event) {
@@ -177,6 +230,8 @@ class Profile extends Component {
     let View;
     let title;
     if (display === "edit") {
+      let div = document.querySelector("#subSection");
+      div.style.overflow = "hidden";
       View = (
         <form onSubmit={this.editAccount}>
           <label className="profile__formLabel" htmlFor="firstname">
@@ -187,6 +242,7 @@ class Profile extends Component {
             className="profile__input"
             type="text"
             placeholder="First Name"
+            value={this.state.fname}
             required
             onChange={this.firstNameUpdated}
           ></input>
@@ -197,6 +253,7 @@ class Profile extends Component {
             className="profile__input"
             type="text"
             placeholder="Last Name"
+            value={this.state.lname}
             required
             onChange={this.lastNameUpdated}
           ></input>
@@ -207,6 +264,7 @@ class Profile extends Component {
             className="profile__input"
             type="text"
             placeholder="Username"
+            value={this.state.username}
             required
             onChange={this.usernameUpdated}
           ></input>
@@ -227,6 +285,7 @@ class Profile extends Component {
             className="profile__input"
             type="text"
             placeholder="Email"
+            value={this.state.email}
             required
             onChange={this.emailUpdated}
           ></input>
@@ -238,7 +297,10 @@ class Profile extends Component {
     } else if (display === "delete") {
       View = (
         <div className="profile__sectionButtons">
-          <h2 className="profile__sectionTitle"> Are you sure you want to delete your account?</h2>
+          <h2 className="profile__sectionTitle">
+            {" "}
+            Are you sure you want to delete your account?
+          </h2>
           <button
             className="profile__confirmButton yes"
             onClick={this.deleteAccount}
@@ -254,27 +316,40 @@ class Profile extends Component {
         </div>
       );
     } else if (display === "friends") {
-      View = (
-        <div className="profile__sectionTitle">
-          Friend List:
-          <h3 className="profile__subSetionLabel">Username:</h3>
-          <pre className="profile__subSetionLabel">Name:</pre>
-        </div>
-      );
-    }
-    else if (display === "friendRequests") {
-      title = (
-        <div className="profile__sectionTitle">
-          Friend Requests:
+      let div = document.querySelector("#subSection");
+      div.style.overflow = "auto";
+
+      title = <div className="profile__sectionTitle">Friend List:</div>;
+      View = [];
+      for (let i = 0; i < this.state.friends.length; i++) {
+        View.push(
+          <div className="profile__resultsCard" key={i}>
+            <i className="profile__resultsIcon material-icons">person</i>
+            <p className="profile__resultsName">
+              {this.state.friends[i].fname} {this.state.friends[i].lname}
+            </p>
+            <p className="profile__resultsContent">
+              Username: {this.state.friends[i].username}
+              <br></br>
+              Email: {this.state.friends[i].email}
+              <br></br>
+            </p>
           </div>
-      );
+        );
+      }
+    } else if (display === "friendRequests") {
+      let div = document.querySelector("#subSection");
+      div.style.overflow = "auto";
+
+      title = <div className="profile__sectionTitle">Friend Requests:</div>;
       View = [];
       for (let i = 0; i < this.state.friendRequests.length; i++) {
         View.push(
           <div className="profile__resultsCard" key={i}>
             <i className="profile__resultsIcon material-icons">person</i>
             <p className="profile__resultsName">
-              {this.state.friendRequests[i].fname} {this.state.friendRequests[i].lname}
+              {this.state.friendRequests[i].fname}{" "}
+              {this.state.friendRequests[i].lname}
             </p>
             <p className="profile__resultsContent">
               Username: {this.state.friendRequests[i].username}
@@ -282,8 +357,20 @@ class Profile extends Component {
               Email: {this.state.friendRequests[i].email}
               <br></br>
             </p>
-              <button className="profile__acceptButton" onClick={() => this.acceptFriendRequest(this.state.friendRequests[i]._id)}>Accept</button>
-              <button className="profile__declineButton" onClick={() => this.acceptFriendRequest}>Decline</button>
+            <button
+              className="profile__acceptButton"
+              onClick={() =>
+                this.acceptFriendRequest(this.state.friendRequests[i]._id)
+              }
+            >
+              Accept
+            </button>
+            <button
+              className="profile__declineButton"
+              onClick={() => this.acceptFriendRequest}
+            >
+              Decline
+            </button>
           </div>
         );
       }
@@ -347,13 +434,19 @@ class Profile extends Component {
             <a className="profile__link" href="/profile">
               <h3
                 className="profile__subSectionContent"
-                onClick={this.confirmDelete}
+                onClick={(event) => {
+                  event.preventDefault();
+                  this.setState({ view: "delete" });
+                }}
               >
                 Delete Account
               </h3>
             </a>
           </div>
-          <div className="profile__subSection profileInfo">{title}{View}</div>
+          <div id="subSection" className="profile__subSection profileInfo">
+            {title}
+            {View}
+          </div>
         </div>
       </div>
     );

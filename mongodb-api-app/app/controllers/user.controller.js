@@ -134,7 +134,6 @@ exports.searchUsers = async (req, res) => {
   await User.find({ $and: [ { $or: [{username: regex },{email: regex}] }] } 
     )
     .then((data) => {
-      console.log(data);
       res.json(data);
     })
     .catch((err) => {
@@ -168,14 +167,13 @@ async function updatePassword(body, id) {
 // Update a User by the id in the request
 exports.update = async (req, res) => {
   let newUserData = {_id: req.params.id};
-  console.log(newUserData);
   if (req.body.fname) newUserData.fname = req.body.fname;
   if (req.body.lname) newUserData.lname = req.body.lname;
   if (req.body.email) {
     User.findOne({ email: req.body.email })
       .then(data => {
-        if (data) {
-          res.status(400).json("Invalid User email.");
+        if (data != null && data._id != newUserData._id) {
+          res.status(400).json("There is a different user with that email already in the system.");
         }
       })
       .catch(err => {
@@ -194,6 +192,7 @@ exports.update = async (req, res) => {
     newUserData.username = req.body.username;
   }
   if(req.body.friends) newUserData.friends = req.body.friends;
+
   // update user with newUserData
   await User.findByIdAndUpdate( newUserData._id,  
     newUserData)

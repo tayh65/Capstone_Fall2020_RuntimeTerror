@@ -1,17 +1,19 @@
-module.exports = app => {
-    const friends = require("../controllers/friend.controller.js");
-  
-    var router = require("express").Router();
+module.exports = (app) => {
+  const friends = require("../controllers/friend.controller.js");
 
-    // Get friend requests
-    router.get("/:toId", friends.getFriendRequests);
+  var router = require("express").Router();
 
-    // Send friend request
-    router.post("/to/:toId/from/:fromId", friends.sendFriendRequest);
+  // Get friend requests
+  router.get("/:id", friends.getFriendRequestData);
 
-    // Update friend request
-    router.put("/edit/:id", friends.updateFriendRequest);
+  // Get friend requests
+  router.get("/to/:toId", friends.getFriendRequests);
 
-    app.use('/api/friend', router);
+  // Send friend request
+  router.post("/to/:toId/from/:fromId", friends.sendFriendRequest);
 
-}
+  // Update friend request
+  router.put("/edit/:id", friends.updateFriendRequest);
+
+  app.use("/api/friend", router);
+};

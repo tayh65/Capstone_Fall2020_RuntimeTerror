@@ -114,7 +114,7 @@ exports.findAll = async (req, res) => {
 
 // Find a single User with an id
 exports.findOne = async (req, res) => {
-  await User.findOne(req.params.id)
+  await User.findById(req.params.id)
     .then((data) => {
       res.json(data);
     })

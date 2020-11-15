@@ -11,13 +11,21 @@ class Search extends Component {
     this.state = {
       results: [],
       submittedSearch: false,
+      loggedInUser: 0
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addFriend = this.addFriend.bind(this);
   }
   componentDidMount() {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const user = JSON.parse(localStorage.getItem("user"));
     if (isLoggedIn === "false" || isLoggedIn == null) {
       this.props.history.push("/login");
+    }
+
+    if(user != null){
+      console.log(user);
+      this.setState({ loggedInUser: user._id });
     }
   }
 
@@ -29,7 +37,24 @@ class Search extends Component {
       .then((res) => {
         this.setState({ results: res.data });
         this.setState({ submittedSearch: true });
-        console.log(res.data);
+      })
+      .catch((err) => {
+        if (err) {
+          alert(err);
+        }
+      });
+  }
+
+  addFriend(id) {
+    let to = id;
+    let from = this.state.loggedInUser;
+    console.log(to);
+    console.log(from);
+    api
+      .post(`${API_URL}/api/friend/to/${to}/from/${from}`)
+      .then((res) => {
+        console.log(res);
+        alert("Friend Request sent!")
       })
       .catch((err) => {
         if (err) {
@@ -54,7 +79,7 @@ class Search extends Component {
             Email: {this.state.results[i].email}
             <br></br>
           </p>
-          <i className="search__addIcon material-icons">add</i>
+            <i className="search__addIcon material-icons" onClick={() => this.addFriend(this.state.results[i]._id)}>add</i>
         </div>
       );
     }

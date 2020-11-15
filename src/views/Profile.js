@@ -16,6 +16,7 @@ class Profile extends Component {
       username: "",
       email: "",
       friends: [],
+      friendRequests: [],
       view: "",
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
@@ -24,6 +25,8 @@ class Profile extends Component {
     this.passwordUpdated = this.passwordUpdated.bind(this);
     this.emailUpdated = this.emailUpdated.bind(this);
     this.showFriends = this.showFriends.bind(this);
+    this.showFriendRequests = this.showFriendRequests.bind(this);
+    this.acceptFriendRequest = this.acceptFriendRequest.bind(this);
     this.editAccount = this.editAccount.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
@@ -36,7 +39,7 @@ class Profile extends Component {
       this.props.history.push("/login");
     }
 
-    if (user) {
+    if (user != null) {
       this.setState({
         _id: user.id,
         fname: user.fname,
@@ -45,7 +48,30 @@ class Profile extends Component {
         email: user.email,
         friends: user.friends,
       });
+      this.getFriendRequests(user._id);
     }
+
+  }
+
+  getFriendRequests(userId){
+    let friendRequests = [];
+    api
+      .get(`${API_URL}/api/friend/${userId}`)
+      .then((res) => {
+        for(let i = 0; i < res.data.length; i++){
+          api
+          .get(`${API_URL}/api/users/${res.data[i]}`)
+          .then((res) => {
+            friendRequests.push(res.data);
+            this.setState({ friendRequests: friendRequests });
+          });
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          alert(err);
+        }
+      });
   }
 
   firstNameUpdated(event) {
@@ -77,8 +103,15 @@ class Profile extends Component {
     this.setState({ view: "friends" });
   }
 
-  async editAccount(event) {
+  showFriendRequests(event) {
     event.preventDefault();
+    this.setState({ view: "friendRequests" });
+  }
+
+  async editAccount(event) {
+    if(event != null){
+      event.preventDefault();
+    }
     let payload = {
       fname: this.state.fname,
       lname: this.state.lname,
@@ -107,6 +140,16 @@ class Profile extends Component {
       });
   }
 
+   acceptFriendRequest(friends){
+    let friendArray = [];
+    friendArray.push(friends);
+    for(let i = 0; i < this.state.friends.length; i++){
+      friendArray.push(this.state.friends[i]);
+    }
+    this.setState({ friends: friendArray });
+    this.editAccount();
+  }
+
   confirmDelete(event) {
     event.preventDefault();
     this.setState({ view: "delete" });
@@ -132,6 +175,7 @@ class Profile extends Component {
   render() {
     let display = this.state.view;
     let View;
+    let title;
     if (display === "edit") {
       View = (
         <form onSubmit={this.editAccount}>
@@ -217,6 +261,32 @@ class Profile extends Component {
           <pre className="profile__subSetionLabel">Name:</pre>
         </div>
       );
+    }
+    else if (display === "friendRequests") {
+      title = (
+        <div className="profile__sectionTitle">
+          Friend Requests:
+          </div>
+      );
+      View = [];
+      for (let i = 0; i < this.state.friendRequests.length; i++) {
+        View.push(
+          <div className="profile__resultsCard" key={i}>
+            <i className="profile__resultsIcon material-icons">person</i>
+            <p className="profile__resultsName">
+              {this.state.friendRequests[i].fname} {this.state.friendRequests[i].lname}
+            </p>
+            <p className="profile__resultsContent">
+              Username: {this.state.friendRequests[i].username}
+              <br></br>
+              Email: {this.state.friendRequests[i].email}
+              <br></br>
+            </p>
+              <button className="profile__acceptButton" onClick={() => this.acceptFriendRequest(this.state.friendRequests[i]._id)}>Accept</button>
+              <button className="profile__declineButton" onClick={() => this.acceptFriendRequest}>Decline</button>
+          </div>
+        );
+      }
     } else {
       View = (
         <div>
@@ -246,13 +316,21 @@ class Profile extends Component {
             >
               My Account
             </h2>
-            <i className="profile__searchIcon material-icons">search</i>
+            <i className="profile__profileIcon material-icons">profile</i>
             <a className="profile__link" href="/profile">
               <h3
                 className="profile__subSectionContent"
                 onClick={this.showFriends}
               >
                 Friends
+              </h3>
+            </a>
+            <a className="profile__link" href="/profile">
+              <h3
+                className="profile__subSectionContent"
+                onClick={this.showFriendRequests}
+              >
+                Friend Requests
               </h3>
             </a>
             <a className="profile__link" href="/profile">
@@ -275,7 +353,7 @@ class Profile extends Component {
               </h3>
             </a>
           </div>
-          <div className="profile__subSection profileInfo">{View}</div>
+          <div className="profile__subSection profileInfo">{title}{View}</div>
         </div>
       </div>
     );

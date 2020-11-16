@@ -4,10 +4,11 @@ import "../css/Profile.scss";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
+import FriendList from "../components/FriendList";
 // import { Alert } from "reactstrap";
 
 class Profile extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       _id: "",
@@ -15,15 +16,16 @@ class Profile extends Component {
       lname: "",
       username: "",
       email: "",
-      friends: [],
+      friends: props.friends,
       view: "",
+      friendDetails: []
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
     this.lastNameUpdated = this.lastNameUpdated.bind(this);
     this.usernameUpdated = this.usernameUpdated.bind(this);
     this.passwordUpdated = this.passwordUpdated.bind(this);
     this.emailUpdated = this.emailUpdated.bind(this);
-    this.showFriends = this.showFriends.bind(this);
+    this.populateFriends = this.populateFriends.bind(this);
     this.editAccount = this.editAccount.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
@@ -72,9 +74,46 @@ class Profile extends Component {
     this.setState({ friends: event.target.value });
   }
 
-  showFriends(event) {
+  populateFriends(event) {
     event.preventDefault();
-    this.setState({ view: "friends" });
+
+    let friendDetails = this.state.friendDetails;
+    let friends = this.state.friends;
+    friends.forEach( (friendID) => {
+      console.log("FRIEND ID: " + friendID);
+      let alreadyPopulated = friendDetails.find(friend => friend._id === friendID);
+      console.log(alreadyPopulated);
+
+      if(!alreadyPopulated) {
+        let data = {};
+        api
+            .get(`${API_URL}/api/users/${friendID}`)
+            .then((res) => {
+              // console.log("RESPONSE: " + res.data);
+              // Remove id from friends if the response is null
+              if(res.data === null) {
+                friends.splice(friends.indexOf(friendID), 1);
+                // console.log("REMOVE FRIENDID: " + friends);
+                this.setState({friends: friends});
+              }
+              data = {
+                _id: res.data._id,
+                username: res.data.username,
+                fname: res.data.fname,
+                lname: res.data.lname,
+                email: res.data.email
+              }
+              friendDetails.push(data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+      }//close if
+    });//close forEach
+      
+    // console.log(friendDetails)
+    this.setState({ view: "friends", friendDetails: friendDetails});
+    // console.log(this.state.friendDetails)
   }
 
   async editAccount(event) {
@@ -213,13 +252,18 @@ class Profile extends Component {
       View = (
         <div className="profile__sectionTitle">
           Friend List:
-          <h3 className="profile__subSetionLabel">Username:</h3>
-          <pre className="profile__subSetionLabel">Name:</pre>
+          <div className="profile__friendListSection">
+            {/* <ul>
+              {this.state.friendDetails.map(friend => (
+                <li key={friend._id}>{friend.username}</li>
+              ))}
+            </ul> */<FriendList friendList={this.state.friendDetails}></FriendList>}
+          </div>
         </div>
       );
     } else {
       View = (
-        <div>
+        <div className="profile__container">
           <pre className="profile__subSetionLabel">
             First Name: {this.state.fname}
           </pre>
@@ -250,7 +294,7 @@ class Profile extends Component {
             <a className="profile__link" href="/profile">
               <h3
                 className="profile__subSectionContent"
-                onClick={this.showFriends}
+                onClick={this.populateFriends}
               >
                 Friends
               </h3>

@@ -1,4 +1,5 @@
 import React from 'react';
+import "../css/App.scss";
 
 class Friend extends React.Component {
   render() {
@@ -7,14 +8,17 @@ class Friend extends React.Component {
     return (
       <div className='friend'>
         <div className='username'>
-          { this.props.username }
+          { this.props.fname } { this.props.lname }
         </div>
-        <div className='fname'>
+        {/* <div className='fname'>
           { this.props.fname }
         </div>
         <div className='lname'>
           { this.props.lname }
         </div>
+        <div className='lname'>
+          { this.props.email }
+        </div> */}
       </div>
     );
   }
@@ -23,7 +27,8 @@ class Friend extends React.Component {
 Friend.defaultProps = {
   username: '',
   fname: '',
-  lname: ''
+  lname: '',
+  email: ''
 };
 
 export default Friend;

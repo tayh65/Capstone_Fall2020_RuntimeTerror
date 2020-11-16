@@ -4,6 +4,7 @@ import "../css/Profile.scss";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
+import FriendList from "../components/FriendList";
 // import { Alert } from "reactstrap";
 
 class Profile extends Component {
@@ -77,19 +78,30 @@ class Profile extends Component {
     event.preventDefault();
 
     let friendDetails = this.state.friendDetails;
-    this.state.friends.forEach( (friendID) => {
+    let friends = this.state.friends;
+    friends.forEach( (friendID) => {
+      console.log("FRIEND ID: " + friendID);
       let alreadyPopulated = friendDetails.find(friend => friend._id === friendID);
+      console.log(alreadyPopulated);
 
       if(!alreadyPopulated) {
         let data = {};
         api
             .get(`${API_URL}/api/users/${friendID}`)
             .then((res) => {
+              // console.log("RESPONSE: " + res.data);
+              // Remove id from friends if the response is null
+              if(res.data === null) {
+                friends.splice(friends.indexOf(friendID), 1);
+                // console.log("REMOVE FRIENDID: " + friends);
+                this.setState({friends: friends});
+              }
               data = {
                 _id: res.data._id,
                 username: res.data.username,
                 fname: res.data.fname,
-                lname: res.data.lname
+                lname: res.data.lname,
+                email: res.data.email
               }
               friendDetails.push(data);
             })
@@ -99,8 +111,9 @@ class Profile extends Component {
       }//close if
     });//close forEach
       
-    console.log(friendDetails)
+    // console.log(friendDetails)
     this.setState({ view: "friends", friendDetails: friendDetails});
+    // console.log(this.state.friendDetails)
   }
 
   async editAccount(event) {
@@ -240,17 +253,17 @@ class Profile extends Component {
         <div className="profile__sectionTitle">
           Friend List:
           <div className="profile__friendListSection">
-            <ul>
+            {/* <ul>
               {this.state.friendDetails.map(friend => (
                 <li key={friend._id}>{friend.username}</li>
               ))}
-            </ul>
+            </ul> */<FriendList friendList={this.state.friendDetails}></FriendList>}
           </div>
         </div>
       );
     } else {
       View = (
-        <div>
+        <div className="profile__container">
           <pre className="profile__subSetionLabel">
             First Name: {this.state.fname}
           </pre>

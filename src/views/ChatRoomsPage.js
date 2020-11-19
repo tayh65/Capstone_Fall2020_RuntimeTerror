@@ -1,7 +1,7 @@
 import React from "react";
 import io from "socket.io-client";
-import { API_URL } from "../config/api";
-import ChannelList from './ChannelList';
+import { api, API_URL } from "../config/api";
+import ChannelList from '../components/ChannelList';
 import "../css/App.scss";
 import "../css/ChatRooms.scss";
 import { Link, withRouter } from "react-router-dom";
@@ -14,8 +14,8 @@ class ChatRoomsPage extends React.Component {
         this.loadChannels();
         this.setUpSocket();
         const isLoggedIn = localStorage.getItem("isLoggedIn");
-        if(isLoggedIn === "false" || isLoggedIn == null){
-          this.props.history.push("/login");
+        if (isLoggedIn === "false" || isLoggedIn == null) {
+            this.props.history.push("/login");
         }
     }
 
@@ -41,6 +41,7 @@ class ChatRoomsPage extends React.Component {
             channels.forEach(c => {
                 if (c.id === channel.id) {
                     c.participants = channel.participants;
+                    c.sockets = channel.sockets;
                 }
             });
             this.setState({ channels });
@@ -49,11 +50,16 @@ class ChatRoomsPage extends React.Component {
 
     //get list of channels
     loadChannels = async () => {
-        fetch("http://localhost:4000/getChannels").then(async response => {
-            let data = await response.json();
-            this.setState({ channels: data.channels });
-            // console.log(this.state.channels);
+        api
+        .get(`${API_URL}/api/rooms/`)
+        .then((res) => {
+          this.setState({ channels: res.data });
         })
+        // fetch("http://localhost:4000/getChannels").then(async response => {
+        //     let data = await response.json();
+        //     this.setState({ channels: data.channels });
+        //     // console.log(this.state.channels);
+        // })
     }
 
     // updates the clients current chatroom based on the room they selected from the list
@@ -61,9 +67,12 @@ class ChatRoomsPage extends React.Component {
         let channel = this.state.channels.find(c => {
             return c.id === id;
         });
+
+        let channels = this.state.channels;
+
         this.setState({ channel });
-        this.setState({channelConnected: true});
-        socket.emit("channel-join", id, ack => {
+        this.setState({ channelConnected: true });
+        socket.emit("channel-join", {id, channels}, ack => {
         });
     }
 
@@ -81,9 +90,9 @@ class ChatRoomsPage extends React.Component {
                     }}>
                         Join {this.state.channel.name}
                     </Link>
-                    <button className="create_button" type="button">
+                    <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
                         Create ChatRoom
-                        </button>
+                        </Link>
                     <div className="chat_list">
                         <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
                     </div>
@@ -96,9 +105,9 @@ class ChatRoomsPage extends React.Component {
         else {
             return (
                 <div className="chatrooms">
-                    <button className="create_button" type="button">
+                    <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
                         Create ChatRoom
-                        </button>
+                        </Link>
                     <div className="chat_list">
                         <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
                     </div>

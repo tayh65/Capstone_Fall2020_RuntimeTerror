@@ -9,11 +9,15 @@ const socketIo = require("socket.io");
 // user can create their own and add them here later
 var STATIC_CHANNELS = [{
   name: 'Test 1',
+  password: "",
+  private: false,
   participants: 0,
   id: 1,
   sockets: []
 }, {
   name: 'Test 2',
+  password: "",
+  private: false,
   participants: 0,
   id: 2,
   sockets: []
@@ -63,8 +67,9 @@ app.get("/getChannels", (req, res) => {
   })
 });
 
-// user routes
+// routes
 require("./app/routes/user.routes")(app);
+require("./app/routes/room.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;
@@ -83,9 +88,12 @@ io.on("connection", (socket) => {
   socket.emit("connected-to-server", null);
 
   // adds client to a chatroom they specify by id
-  socket.on("channel-join", id => {
-    console.log("user joined channel id", id);
-    STATIC_CHANNELS.forEach(c => {
+  socket.on("channel-join", obj => {
+    let id = obj.id;
+    let channels = obj.channels;
+    console.log("user joined channel id", obj.id);
+
+    channels.forEach(c => {
       // adds user if the id they used matches the list of rooms on the server
       if (c.id === id) {
         if (c.sockets.indexOf(socket.id) == (-1)) {

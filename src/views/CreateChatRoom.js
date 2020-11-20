@@ -45,7 +45,15 @@ class CreateChatRoom extends Component {
     async handleSubmit(event) {
       event.preventDefault();
       this.state.id = Date.now();
+
+      //add room creator to list of private users
+      if(this.state.private === "true"){
+        this.state.privateUsers.push(this.state.owner);
+        console.log(this.state.privateUsers);
+      }
+
       let payload = this.state;
+      console.log(payload)
   
       api
         .post(`${API_URL}/api/rooms/add`, payload)

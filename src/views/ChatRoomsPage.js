@@ -73,7 +73,7 @@ class ChatRoomsPage extends React.Component {
     loadChannels = async () => {
         api
             //.get(`${API_URL}/api/rooms/`)
-            .get(`${API_URL}/api/rooms/private:${this.state.username}`)//,{params: this.state.channels})
+            .get(`${API_URL}/api/rooms/private${this.state.username}`)//,{params: this.state.channels})
             .then((res) => {
                 this.setState({ channels: res.data });
             })

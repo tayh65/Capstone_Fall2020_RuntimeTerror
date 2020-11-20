@@ -15,5 +15,8 @@ module.exports = app => {
   // Retrieve a single room with id
   router.get("/:id", rooms.findOne);
 
+  // Delete a room with id
+  router.delete("/remove:id", rooms.delete);
+
   app.use('/api/rooms', router);
 };

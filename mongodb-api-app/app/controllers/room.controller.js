@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
         private: req.body.private,
         participants: 0,
         id: req.body.id,
-        privateUsers: [],
+        privateUsers: req.body.privateUsers,
         sockets: [],
     };
 
@@ -39,10 +39,11 @@ exports.findAll = async (req, res) => {
         });
 };
 
-// Retrieve all Rooms from the database.
+// Retrieve all public Rooms and private Rooms the user is in from the database.
 exports.findAllPrivate = async (req, res) => {
-    console.log(req.params);
-    await Room.find({"private":"true"})
+    var user = req.params.user;
+    var userChannelsQuery = {$or:[ {privateUsers:user}, {private: "false"}]};
+    await Room.find(userChannelsQuery)
         .then((data) => {
             res.json(data);
         })
@@ -65,3 +66,18 @@ exports.findOne = async (req, res) => {
             });
         });
 };
+
+// Delete a single Room by id
+exports.delete = async(req, res) => {
+    var query = {id:req.params.id}
+
+    await Room.deleteOne(query)
+    .then((data) => {
+        res.json(data);
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving Room data.",
+        });
+    });
+}

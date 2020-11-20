@@ -5,24 +5,6 @@ const mongoose = require("mongoose");
 const passport = require('passport');
 const socketIo = require("socket.io");
 
-// default channels
-// user can create their own and add them here later
-var STATIC_CHANNELS = [{
-  name: 'Test 1',
-  password: "",
-  private: false,
-  participants: 0,
-  id: 1,
-  sockets: []
-}, {
-  name: 'Test 2',
-  password: "",
-  private: false,
-  participants: 0,
-  id: 2,
-  sockets: []
-}];
-
 const app = express();
 
 // var corsOptions = {
@@ -80,9 +62,13 @@ const server = app.listen(PORT, () => {
 //create socket on server for receiving messages/requests
 const io = socketIo(server);
 
+// array to keep track of users online
+var usersOnServer = [];
+
 //create connection between clients and server and handle events
 io.on("connection", (socket) => {
   console.log("New client connected");
+  usersOnServer.push(socket);
 
   // notify client of successful connection
   socket.emit("connected-to-server", null);
@@ -126,15 +112,11 @@ io.on("connection", (socket) => {
   // a client disconnected
   socket.on("disconnect", () => {
     console.log("Client disconnected");
-    // if user was in a chatroom, remove them from the room
-    STATIC_CHANNELS.forEach(c => {
-      let index = c.sockets.indexOf(socket.id);
+    // if user was in a chatroom, notify clients to them from the room they were in
+      let index = usersOnServer.indexOf(socket);
       if (index != (-1)) {
-        c.sockets.splice(index, 1);
-        c.participants--;
-        io.emit("channel", c);
+        io.emit("user-disconnected", socket.id);
       }
-    });
   });
 
 });

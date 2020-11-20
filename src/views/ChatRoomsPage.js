@@ -19,11 +19,18 @@ class ChatRoomsPage extends React.Component {
         }
     }
 
-    state = {
-        channels: null,
-        socket: socket,
-        channel: null,
-        channelConnected: false
+    constructor() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        super();
+
+        this.state = {
+            channels: null,
+            socket: socket,
+            channel: null,
+            channelConnected: false,
+            username: user.username,
+
+        }
     }
 
     // functions/requests to be sent to the server go here
@@ -46,20 +53,30 @@ class ChatRoomsPage extends React.Component {
             });
             this.setState({ channels });
         });
+
+        // updates channels after a user has disconnected
+        socket.on("user-disconnected", id => {
+            let channels = this.state.channels;
+
+            channels.forEach(c => {
+                let index = c.sockets.indexOf(id)
+                if (index !== (-1)) {
+                    c.sockets.splice(index, 1);
+                    c.participants--;
+                }
+            });
+            this.setState({ channels });
+        });
     }
 
     //get list of channels
     loadChannels = async () => {
         api
-        .get(`${API_URL}/api/rooms/`)
-        .then((res) => {
-          this.setState({ channels: res.data });
-        })
-        // fetch("http://localhost:4000/getChannels").then(async response => {
-        //     let data = await response.json();
-        //     this.setState({ channels: data.channels });
-        //     // console.log(this.state.channels);
-        // })
+            //.get(`${API_URL}/api/rooms/`)
+            .get(`${API_URL}/api/rooms/private:${this.state.username}`)//,{params: this.state.channels})
+            .then((res) => {
+                this.setState({ channels: res.data });
+            })
     }
 
     // updates the clients current chatroom based on the room they selected from the list
@@ -72,7 +89,7 @@ class ChatRoomsPage extends React.Component {
 
         this.setState({ channel });
         this.setState({ channelConnected: true });
-        socket.emit("channel-join", {id, channels}, ack => {
+        socket.emit("channel-join", { id, channels }, ack => {
         });
     }
 
@@ -86,7 +103,8 @@ class ChatRoomsPage extends React.Component {
                         pathname: "/chat",
                         channel: this.state.channel,
                         channels: this.state.channels,
-                        socket: this.state.socket
+                        socket: this.state.socket,
+                        username: this.state.username,
                     }}>
                         Join {this.state.channel.name}
                     </Link>

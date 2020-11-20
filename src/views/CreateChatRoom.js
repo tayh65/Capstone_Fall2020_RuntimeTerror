@@ -7,19 +7,28 @@ import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
 
 class CreateChatRoom extends Component {
+
+  componentDidMount() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "false" || isLoggedIn == null) {
+      this.props.history.push("/login");
+    }
+  }
+
   constructor() {
+    const user = JSON.parse(localStorage.getItem("user"));
     super();
     this.state = {
+      owner: user.username,
       roomName: "",
-      password: "",
       private: false,
       participants: 0,
       id: 0,
+      privateUsers: [],
       sockets: [],
     };
   
       this.setRoomName = this.setRoomName.bind(this);
-      this.setPassword = this.setPassword.bind(this);
       this.setIsPrivate = this.setIsPrivate.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -27,10 +36,6 @@ class CreateChatRoom extends Component {
   
     setRoomName(event) {
       this.setState({ roomName: event.target.value });
-    }
-
-    setPassword(event) {
-      this.setState({ password: event.target.value });
     }
 
     setIsPrivate(event){
@@ -105,7 +110,7 @@ class CreateChatRoom extends Component {
                   Public
                 </label>
 
-                <label className="createChatRoom_formLabel" htmlFor="roomname">
+                {/* <label className="createChatRoom_formLabel" htmlFor="roomname">
                   Room Password
             </label>
 
@@ -116,7 +121,7 @@ class CreateChatRoom extends Component {
                   required
                   disabled= {this.state.private === "false"}
                 onChange={this.setPassword}
-                ></input>
+                ></input> */}
 
 
                 <div

@@ -8,6 +8,17 @@ import { withRouter } from "react-router-dom";
 class Chat extends React.Component {
 
   componentDidMount() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "false" || isLoggedIn == null) {
+      this.props.history.push("/login");
+    }
+
+    // fixes error when loading "chat" page directly (not loading from "chatrooms" page)
+    if(typeof this.state.socket === "undefined"){
+      this.props.history.push("/chatrooms");
+      return;
+    }
+
     this.setUpSocket();
   }
 
@@ -17,7 +28,7 @@ class Chat extends React.Component {
       channels: props.location.channels,
       channel: props.location.channel,
       socket: props.location.socket,
-      username: props.username,
+      username: props.location.username,
       messages: []
     };
     this.sendHandler = this.sendHandler.bind(this);
@@ -51,7 +62,7 @@ class Chat extends React.Component {
   sendHandler(channel_id, message) {
     const socket = this.state.socket;
     const messageObject = {
-      username: this.props.username,
+      username: this.state.username,
       message,
     };
 

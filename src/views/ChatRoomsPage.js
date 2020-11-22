@@ -99,20 +99,24 @@ class ChatRoomsPage extends React.Component {
         if (this.state.channelConnected) {
             return (
                 <div className="chatrooms">
-                    <Link role="button" className="join_button" to={{
-                        pathname: "/chat",
-                        channel: this.state.channel,
-                        channels: this.state.channels,
-                        socket: this.state.socket,
-                        username: this.state.username,
-                    }}>
-                        Join {this.state.channel.name}
-                    </Link>
-                    <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
-                        Create ChatRoom
-                        </Link>
-                    <div className="chat_list">
-                        <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                    <div className="chatrooms_container">
+                        <div className="chatrooms_section">
+                            <Link role="button" className="join_button" to={{
+                                pathname: "/chat",
+                                channel: this.state.channel,
+                                channels: this.state.channels,
+                                socket: this.state.socket,
+                                username: this.state.username,
+                            }}>
+                                Join {this.state.channel.name}
+                            </Link>
+                            <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
+                                Create ChatRoom
+                            </Link>
+                            <div className="chat_list">
+                                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -123,11 +127,15 @@ class ChatRoomsPage extends React.Component {
         else {
             return (
                 <div className="chatrooms">
-                    <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
-                        Create ChatRoom
-                        </Link>
-                    <div className="chat_list">
-                        <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                    <div className="chatrooms_container">
+                        <div className="chatrooms_section">
+                            <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
+                                Create ChatRoom
+                            </Link>
+                            <div className="chat_list">
+                                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                            </div>
+                        </div>
                     </div>
                 </div>
 

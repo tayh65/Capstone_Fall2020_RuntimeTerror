@@ -13,6 +13,7 @@ class Search extends Component {
       submittedSearch: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.createChat = this.createChat.bind(this);
   }
   componentDidMount() {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -38,12 +39,38 @@ class Search extends Component {
       });
   }
 
+  createChat(event) {
+    const thisUser = JSON.parse(localStorage.getItem("user")).username;
+    var resultsCard = event.target.parentNode.id;
+    var selectedUser = document.getElementById(resultsCard).getAttribute('username');
+    var roomName = thisUser + "-" + selectedUser;
+
+    let payload = {
+      owner: thisUser,
+      roomName: roomName,
+      private: true,
+      participants: 0,
+      id: Date.now(),
+      privateUsers: [thisUser, selectedUser],
+      sockets: [],
+    };
+
+    api
+      .post(`${API_URL}/api/rooms/add`, payload)
+      .catch((err) => {
+        console.error(err);
+        alert(err);
+      });
+    alert(`${payload.roomName} Created!`)
+    this.props.history.push(`/chat/${payload.id}`);
+  }
+
   render() {
     let results = [];
     let resultsTitle;
     for (let i = 0; i < this.state.results.length; i++) {
       results.push(
-        <div className="search__resultsCard" key={i}>
+        <div className="search__resultsCard" key={i} id={"userCard" + i} username={this.state.results[i].username}>
           <i className="search__resultsIcon material-icons">person</i>
           <p className="search__resultsName">
             {this.state.results[i].fname} {this.state.results[i].lname}
@@ -55,6 +82,7 @@ class Search extends Component {
             <br></br>
           </p>
           <i className="search__addIcon material-icons">add</i>
+          <i className="search__chatIcon material-icons" onClick={this.createChat}>chat</i>
         </div>
       );
     }

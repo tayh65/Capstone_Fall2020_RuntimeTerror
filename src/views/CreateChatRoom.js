@@ -76,7 +76,6 @@ class CreateChatRoom extends Component {
     }
 
     let payload = this.state;
-    console.log(payload)
 
     api
       .post(`${API_URL}/api/rooms/add`, payload)
@@ -90,7 +89,7 @@ class CreateChatRoom extends Component {
 
   addToPrivateRoom(event) {
     var resultsCard = event.target.parentNode.id;
-    var username = document.getElementById(resultsCard).getAttribute('value');
+    var username = document.getElementById(resultsCard).getAttribute('username');
 
     //select user for invite
     if ((document.getElementById(resultsCard).className === 'search__resultsCard')) {
@@ -120,7 +119,7 @@ class CreateChatRoom extends Component {
       }
 
       results.push(
-        <div className="search__resultsCard" key={i} id={"userCard" + i} value={this.state.results[i].username}>
+        <div className="search__resultsCard" key={i} id={"userCard" + i} username={this.state.results[i].username}>
           <i className="search__resultsIcon material-icons">person</i>
           <p className="search__resultsName">
             {this.state.results[i].fname} {this.state.results[i].lname}

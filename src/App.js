@@ -59,9 +59,9 @@ class App extends Component {
     let searchRoute;
 
     if (isLoggedIn) {
-      profileRoute = (<Profile clickLogout={this.logout}/>);
-      chatRoute = (<ChatRoomsPage/>);
-      searchRoute = (<Search/>);
+      profileRoute = (<Profile clickLogout={this.logout} />);
+      chatRoute = (<ChatRoomsPage />);
+      searchRoute = (<Search />);
     }
     else {
       profileRoute = (<Redirect to="/login" />);
@@ -80,8 +80,8 @@ class App extends Component {
                 isLoggedIn ? (
                   <Redirect to="/login" />
                 ) : (
-                  <Redirect to="/home" />
-                )
+                    <Redirect to="/home" />
+                  )
               }
             />
             <Route path="/home">
@@ -97,11 +97,12 @@ class App extends Component {
             </Route>
             <Route path="/success">{<SuccessPage />}</Route>
             <Route path="/search">
-              <Search/>
+              <Search />
             </Route>
-            <Route path= "/chatrooms">{chatRoute}</Route>
-            <Route path= "/chat">{Chat}</Route>
-            <Route path= "/create_room">{CreateChatRoom}</Route>
+            <Route path="/chatrooms">{chatRoute}</Route>
+            {/* <Route path="/chat">{Chat}</Route> */}
+            <Route path="/chat/:id?" id="***">{Chat}</Route>
+            <Route path="/create_room">{CreateChatRoom}</Route>
           </Switch>
         </Router>
         <div className="App__divider"></div>

@@ -100,7 +100,13 @@ class ChatRoomsPage extends React.Component {
             return (
                 <div className="chatrooms">
                     <div className="chatrooms_container">
+                        <div className="chat_list">
+                            <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                        </div>
                         <div className="chatrooms_section">
+                            <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
+                                Create ChatRoom
+                            </Link>
                             <Link role="button" className="join_button" to={{
                                 pathname: "/chat",
                                 channel: this.state.channel,
@@ -108,14 +114,8 @@ class ChatRoomsPage extends React.Component {
                                 socket: this.state.socket,
                                 username: this.state.username,
                             }}>
-                                Join {this.state.channel.name}
+                                Join {this.state.channel.roomName}
                             </Link>
-                            <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
-                                Create ChatRoom
-                            </Link>
-                            <div className="chat_list">
-                                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,13 +128,13 @@ class ChatRoomsPage extends React.Component {
             return (
                 <div className="chatrooms">
                     <div className="chatrooms_container">
+                        <div className="chat_list">
+                            <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                        </div>
                         <div className="chatrooms_section">
                             <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
                                 Create ChatRoom
                             </Link>
-                            <div className="chat_list">
-                                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
-                            </div>
                         </div>
                     </div>
                 </div>

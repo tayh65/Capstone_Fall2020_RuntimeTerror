@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const FriendSchema = new Schema({
+const FriendRequestSchema = new Schema({
   user_from: {
     type: Schema.Types.ObjectId,
     ref: "user",
@@ -17,6 +17,6 @@ const FriendSchema = new Schema({
   }
 });
 
-const Friends = model("Friends", FriendSchema);
+const FriendRequest = model("FriendRequest", FriendRequestSchema);
 
-module.exports = Friends;
+module.exports = FriendRequest;

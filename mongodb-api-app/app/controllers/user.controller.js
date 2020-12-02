@@ -6,6 +6,7 @@ let {
   validateRegisterInput,
   validateLoginInput,
 } = require("../../validateInput");
+const { AiOutlineConsoleSql } = require("react-icons/ai");
 // const { useReducer } = require("react");
 
 // Create and Save a new User
@@ -78,6 +79,7 @@ exports.login = async (req, res) => {
           email: user.email,
           friends: user.friends
         };
+        // console.log(payload);
         jwt.sign(
           payload,
           "secret",

@@ -28,7 +28,7 @@ const UserSchema = new Schema({
     type: String,
     unique: true
   },
-  friends: [String]
+  friends: [{type:String}]
 });
 
 const User = model("User", UserSchema);

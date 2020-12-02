@@ -45,4 +45,11 @@ export const SideBarData = [
         icon: <AIIcons.AiOutlineUserAdd/>,
         cName: 'nav_text'
     },
+
+    {
+        title: 'Login',
+        path: '/login',
+        icon: <AIIcons.AiOutlineCoffee/>,
+        cName: 'nav_text'
+    }
 ]

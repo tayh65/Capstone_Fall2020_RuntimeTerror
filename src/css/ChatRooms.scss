@@ -31,10 +31,31 @@
     width: max-content;
     height: 500px;
     margin-top: 2.5rem;
-    //margin-right: 4.5rem;
-    //margin-left: 4.5rem;
     border-radius: 15px;
     overflow: auto;
+}
+
+.roomSearch__input {
+    width: 400px;
+    height: 50px;
+    border-radius: 5px;
+    margin-top: 3rem;
+    margin-left: 2rem;
+}
+
+.roomSearch__button {
+    position: relative;
+    top: 5px;
+    right: 40px;
+    width: 50px;
+    height: 51px;
+    padding: 6px 10px;
+    background: black;
+    font-size: 17px;
+    margin: 1rem 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .create_button{

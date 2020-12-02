@@ -12,6 +12,9 @@ module.exports = app => {
   // Retrieve all private rooms
   router.get("/private:user", rooms.findAllPrivate);
 
+  // Retrieve all rooms the user is in and has a matching/similar search term
+  router.get("/search:term/:user", rooms.findAllWithTerm);
+
   // Retrieve a single room with id
   router.get("/:id", rooms.findOne);
 

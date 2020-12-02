@@ -31,6 +31,8 @@ class ChatRoomsPage extends React.Component {
             username: user.username,
 
         }
+
+        this.searchRooms = this.searchRooms.bind(this);
     }
 
     // functions/requests to be sent to the server go here
@@ -93,6 +95,19 @@ class ChatRoomsPage extends React.Component {
         });
     }
 
+    searchRooms(event) {
+        event.preventDefault();
+        let searchTerm = document.getElementById("roomSearchInput").value;
+        console.log(searchTerm);
+
+        api
+            .get(`${API_URL}/api/rooms/search${searchTerm}/${this.state.username}`)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({ channels: res.data });
+            });
+    }
+
     render() {
         // render page if user selected a chatroom
         // adds "Join" button after selection
@@ -101,6 +116,18 @@ class ChatRoomsPage extends React.Component {
                 <div className="chatrooms">
                     <div className="chatrooms_container">
                         <div className="chat_list">
+                            <form action="/chatrooms" onSubmit={this.searchRooms}>
+                                <input
+                                    id="roomSearchInput"
+                                    className="roomSearch__input"
+                                    type="text"
+                                    placeholder="Search public rooms"
+                                    name="search"
+                                ></input>
+                                <button className="roomSearch__button" type="submit">
+                                    <i className="search__icon material-icons">search</i>
+                                </button>
+                            </form>
                             <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
                         </div>
                         <div className="chatrooms_section">
@@ -129,6 +156,18 @@ class ChatRoomsPage extends React.Component {
                 <div className="chatrooms">
                     <div className="chatrooms_container">
                         <div className="chat_list">
+                            <form action="/chatrooms" onSubmit={this.searchRooms}>
+                                <input
+                                    id="roomSearchInput"
+                                    className="roomSearch__input"
+                                    type="text"
+                                    placeholder="Search public rooms"
+                                    name="search"
+                                ></input>
+                                <button className="roomSearch__button" type="submit">
+                                    <i className="search__icon material-icons">search</i>
+                                </button>
+                            </form>
                             <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
                         </div>
                         <div className="chatrooms_section">

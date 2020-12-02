@@ -54,6 +54,25 @@ exports.findAllPrivate = async (req, res) => {
         });
 };
 
+// Retrieve all Rooms user is in with matching/similar term
+exports.findAllWithTerm = async(req, res) => {
+    var term = req.params.term;
+    var user = req.params.user;
+
+    let regex = new RegExp(term,'i');
+    var userChannelsQuery = {$and:[{roomName:regex}, {$or:[ {privateUsers:user}, {private: "false"}]}]};
+
+    await Room.find(userChannelsQuery)
+    .then((data) => {
+        res.json(data);
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while getting all the chat rooms.",
+        });
+    });
+};
+
 // Find a single Room with an id
 exports.findOne = async (req, res) => {
     await Room.findById(req.params.id)

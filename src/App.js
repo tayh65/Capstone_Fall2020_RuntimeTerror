@@ -6,7 +6,8 @@ import Profile from "./views/Profile";
 import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
 import ChatRoomsPage from "./views/ChatRoomsPage";
-// import Chat from "./views/Chat";
+import Chat from "./views/Chat";
+import CreateChatRoom from "./views/CreateChatRoom"
 import Search from "./views/Search";
 import NavBar from "./components/NavBar.component";
 import { Redirect } from "react-router-dom";
@@ -58,9 +59,9 @@ class App extends Component {
     let searchRoute;
 
     if (isLoggedIn) {
-      profileRoute = (<Profile clickLogout={this.logout}/>);
-      chatRoute = (<ChatRoomsPage/>);
-      searchRoute = (<Search/>);
+      profileRoute = (<Profile clickLogout={this.logout} />);
+      chatRoute = (<ChatRoomsPage />);
+      searchRoute = (<Search />);
     }
     else {
       profileRoute = (<Redirect to="/login" />);
@@ -79,8 +80,8 @@ class App extends Component {
                 isLoggedIn ? (
                   <Redirect to="/login" />
                 ) : (
-                  <Redirect to="/home" />
-                )
+                    <Redirect to="/home" />
+                  )
               }
             />
             <Route path="/home">
@@ -96,9 +97,12 @@ class App extends Component {
             </Route>
             <Route path="/success">{<SuccessPage />}</Route>
             <Route path="/search">
-              <Search/>
+              <Search />
             </Route>
-            <Route path= "/chatrooms">{chatRoute}</Route>
+            <Route path="/chatrooms">{chatRoute}</Route>
+            {/* <Route path="/chat">{Chat}</Route> */}
+            <Route path="/chat/:id?" id="***">{Chat}</Route>
+            <Route path="/create_room">{CreateChatRoom}</Route>
           </Switch>
         </Router>
         <div className="App__divider"></div>

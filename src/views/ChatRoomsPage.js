@@ -1,7 +1,7 @@
 import React from "react";
 import io from "socket.io-client";
-import { API_URL } from "../config/api";
-import ChannelList from './ChannelList';
+import { api, API_URL } from "../config/api";
+import ChannelList from '../components/ChannelList';
 import "../css/App.scss";
 import "../css/ChatRooms.scss";
 import { Link, withRouter } from "react-router-dom";
@@ -14,16 +14,23 @@ class ChatRoomsPage extends React.Component {
         this.loadChannels();
         this.setUpSocket();
         const isLoggedIn = localStorage.getItem("isLoggedIn");
-        if(isLoggedIn === "false" || isLoggedIn == null){
-          this.props.history.push("/login");
+        if (isLoggedIn === "false" || isLoggedIn == null) {
+            this.props.history.push("/login");
         }
     }
 
-    state = {
-        channels: null,
-        socket: socket,
-        channel: null,
-        channelConnected: false
+    constructor() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        super();
+
+        this.state = {
+            channels: null,
+            socket: socket,
+            channel: null,
+            channelConnected: false,
+            username: user.username,
+
+        }
     }
 
     // functions/requests to be sent to the server go here
@@ -41,6 +48,21 @@ class ChatRoomsPage extends React.Component {
             channels.forEach(c => {
                 if (c.id === channel.id) {
                     c.participants = channel.participants;
+                    c.sockets = channel.sockets;
+                }
+            });
+            this.setState({ channels });
+        });
+
+        // updates channels after a user has disconnected
+        socket.on("user-disconnected", id => {
+            let channels = this.state.channels;
+
+            channels.forEach(c => {
+                let index = c.sockets.indexOf(id)
+                if (index !== (-1)) {
+                    c.sockets.splice(index, 1);
+                    c.participants--;
                 }
             });
             this.setState({ channels });
@@ -49,11 +71,12 @@ class ChatRoomsPage extends React.Component {
 
     //get list of channels
     loadChannels = async () => {
-        fetch("http://localhost:4000/getChannels").then(async response => {
-            let data = await response.json();
-            this.setState({ channels: data.channels });
-            // console.log(this.state.channels);
-        })
+        api
+            //.get(`${API_URL}/api/rooms/`)
+            .get(`${API_URL}/api/rooms/private${this.state.username}`)//,{params: this.state.channels})
+            .then((res) => {
+                this.setState({ channels: res.data });
+            })
     }
 
     // updates the clients current chatroom based on the room they selected from the list
@@ -61,9 +84,12 @@ class ChatRoomsPage extends React.Component {
         let channel = this.state.channels.find(c => {
             return c.id === id;
         });
+
+        let channels = this.state.channels;
+
         this.setState({ channel });
-        this.setState({channelConnected: true});
-        socket.emit("channel-join", id, ack => {
+        this.setState({ channelConnected: true });
+        socket.emit("channel-join", { id, channels }, ack => {
         });
     }
 
@@ -73,19 +99,24 @@ class ChatRoomsPage extends React.Component {
         if (this.state.channelConnected) {
             return (
                 <div className="chatrooms">
-                    <Link role="button" className="join_button" to={{
-                        pathname: "/chat",
-                        channel: this.state.channel,
-                        channels: this.state.channels,
-                        socket: this.state.socket
-                    }}>
-                        Join {this.state.channel.name}
-                    </Link>
-                    <button className="create_button" type="button">
-                        Create ChatRoom
-                        </button>
-                    <div className="chat_list">
-                        <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                    <div className="chatrooms_container">
+                        <div className="chatrooms_section">
+                            <Link role="button" className="join_button" to={{
+                                pathname: "/chat",
+                                channel: this.state.channel,
+                                channels: this.state.channels,
+                                socket: this.state.socket,
+                                username: this.state.username,
+                            }}>
+                                Join {this.state.channel.name}
+                            </Link>
+                            <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
+                                Create ChatRoom
+                            </Link>
+                            <div className="chat_list">
+                                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -96,11 +127,15 @@ class ChatRoomsPage extends React.Component {
         else {
             return (
                 <div className="chatrooms">
-                    <button className="create_button" type="button">
-                        Create ChatRoom
-                        </button>
-                    <div className="chat_list">
-                        <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                    <div className="chatrooms_container">
+                        <div className="chatrooms_section">
+                            <Link className="create_button" role="button" to={{ pathname: "/create_room" }}>
+                                Create ChatRoom
+                            </Link>
+                            <div className="chat_list">
+                                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                            </div>
+                        </div>
                     </div>
                 </div>
 

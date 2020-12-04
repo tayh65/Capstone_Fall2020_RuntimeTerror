@@ -5,6 +5,7 @@ import Login from "./views/Login";
 import Profile from "./views/Profile";
 import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
+import About from "./views/About";
 import ChatRoomsPage from "./views/ChatRoomsPage";
 import Chat from "./views/Chat";
 import CreateChatRoom from "./views/CreateChatRoom"
@@ -82,7 +83,8 @@ class App extends Component {
             <Route path="/login">
               <Login setUser={this.setUserState} />
             </Route>
-            <Route path="/success">{<SuccessPage />}</Route>
+            <Route path="/success"><SuccessPage /></Route>
+            <Route path="/about"><About /></Route>
             <Route path="/search">
               <Search />
             </Route>

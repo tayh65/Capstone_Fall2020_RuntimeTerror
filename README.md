@@ -57,7 +57,6 @@ The server application will now be listening for client connections.
 
 #### REPORTS: 
   ##### Contents (final report, user's manual, installation instructions)
-  Installation instructions can also be found below in the README.md 
   
 #### SRC: 
   ##### Contents (assets, components, config, css, views, App.js, index.js, routes.js, serviceWorker.js)

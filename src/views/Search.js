@@ -11,7 +11,8 @@ class Search extends Component {
     this.state = {
       results: [],
       submittedSearch: false,
-      loggedInUser: 0
+      loggedInUser: 0,
+      friends: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFriend = this.addFriend.bind(this);
@@ -23,9 +24,9 @@ class Search extends Component {
       this.props.history.push("/login");
     }
 
-    if(user != null){
-      console.log(user);
+    if (user != null) {
       this.setState({ loggedInUser: user._id });
+      this.setState({ friends: user.friends });
     }
   }
 
@@ -35,7 +36,23 @@ class Search extends Component {
     api
       .get(`${API_URL}/api/users/search/${searchTerm}`)
       .then((res) => {
-        this.setState({ results: res.data });
+        let resultArray = [];
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i]._id !== this.state.loggedInUser) {
+            let obj = {
+              friend: {},
+              friendIcon: "add",
+            };
+            obj.friend = res.data[i];
+            this.state.friends.find((f) => {
+              if (f === res.data[i]._id) {
+                obj.friendIcon = "Friends";
+              }
+            });
+            resultArray.push(obj);
+          }
+        }
+        this.setState({ results: resultArray });
         this.setState({ submittedSearch: true });
       })
       .catch((err) => {
@@ -48,13 +65,15 @@ class Search extends Component {
   addFriend(id) {
     let to = id;
     let from = this.state.loggedInUser;
-    console.log(to);
-    console.log(from);
     api
       .post(`${API_URL}/api/friend/to/${to}/from/${from}`)
       .then((res) => {
-        console.log(res);
-        alert("Friend Request sent!")
+        console.log(res.data)
+        if(res.data.error != null){
+          alert(res.data.error);
+        }else{
+          alert("Friend Request sent!");
+        }
       })
       .catch((err) => {
         if (err) {
@@ -67,19 +86,39 @@ class Search extends Component {
     let results = [];
     let resultsTitle;
     for (let i = 0; i < this.state.results.length; i++) {
+      let friendStatus;
+      if (this.state.results[i].friendIcon === "Friends") {
+        friendStatus = (
+          <button
+            className="search__acceptButton"
+          >
+            View Profile
+          </button>
+        );
+      } else {
+        friendStatus = (
+          <i
+            className="search__addIcon material-icons"
+            onClick={() => this.addFriend(this.state.results[i].friend._id)}
+          >
+           add
+          </i>
+        );
+      }
       results.push(
         <div className="search__resultsCard" key={i}>
           <i className="search__resultsIcon material-icons">person</i>
           <p className="search__resultsName">
-            {this.state.results[i].fname} {this.state.results[i].lname}
+            {this.state.results[i].friend.fname}{" "}
+            {this.state.results[i].friend.lname}
           </p>
           <p className="search__resultsContent">
-            Username: {this.state.results[i].username}
+            Username: {this.state.results[i].friend.username}
             <br></br>
-            Email: {this.state.results[i].email}
+            Email: {this.state.results[i].friend.email}
             <br></br>
           </p>
-            <i className="search__addIcon material-icons" onClick={() => this.addFriend(this.state.results[i]._id)}>add</i>
+          {friendStatus}
         </div>
       );
     }

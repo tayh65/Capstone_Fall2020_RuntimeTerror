@@ -8,12 +8,18 @@ class Home extends Component {
     super();
     this.state = {
       isLoggedIn: false,
+      user: {},
     };
   }
 
   componentDidMount() {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const user = JSON.parse(localStorage.getItem("user"));
+
     this.setState({ isLoggedIn: isLoggedIn });
+    if (user != null) {
+      this.setState({ user: user });
+    }
   }
 
   render() {
@@ -51,6 +57,7 @@ class Home extends Component {
       <div className="home">
         <div className="home__header">
           <h1 className="home__pageTitle">MoChat</h1>
+          <h2 className="home__welcomeMessage">Welcome back, {this.state.user.fname}</h2>
           {Section}
         </div>
         <div className="home__sectionContainer">

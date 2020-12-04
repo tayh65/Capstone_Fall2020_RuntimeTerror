@@ -4,7 +4,7 @@ import "../css/Profile.scss";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
-// import { Alert } from "reactstrap";
+import FriendList from "../components/FriendList";
 
 class Profile extends Component {
   constructor() {
@@ -149,10 +149,13 @@ class Profile extends Component {
     let id = user._id;
     api
       .put(`${API_URL}/api/users/edit/${id}`, payload)
-      .then((res) => {
+      .then(async (res) => {
+        if(res.data.error != null){
+          alert(res.data.error);
+        }
         if (res != null && res.data != null) {
           alert("Account updated!");
-          this.props.setUser(res.data);
+          await this.props.setUser(res.data);
           this.setState({ _id: res.data._id });
           this.setState({ view: "" });
         } else {
@@ -160,7 +163,6 @@ class Profile extends Component {
         }
       })
       .catch((err) => {
-        console.error(err);
         alert(err);
       });
   }
@@ -229,6 +231,7 @@ class Profile extends Component {
     let display = this.state.view;
     let View;
     let title;
+
     if (display === "edit") {
       let div = document.querySelector("#subSection");
       div.style.overflow = "hidden";
@@ -320,23 +323,8 @@ class Profile extends Component {
       div.style.overflow = "auto";
 
       title = <div className="profile__sectionTitle">Friend List:</div>;
-      View = [];
-      for (let i = 0; i < this.state.friends.length; i++) {
-        View.push(
-          <div className="profile__resultsCard" key={i}>
-            <i className="profile__resultsIcon material-icons">person</i>
-            <p className="profile__resultsName">
-              {this.state.friends[i].fname} {this.state.friends[i].lname}
-            </p>
-            <p className="profile__resultsContent">
-              Username: {this.state.friends[i].username}
-              <br></br>
-              Email: {this.state.friends[i].email}
-              <br></br>
-            </p>
-          </div>
-        );
-      }
+      View =  <FriendList friends={this.state.friends}/>
+        
     } else if (display === "friendRequests") {
       let div = document.querySelector("#subSection");
       div.style.overflow = "auto";

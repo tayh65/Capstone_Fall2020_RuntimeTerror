@@ -16,6 +16,7 @@ class Search extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addFriend = this.addFriend.bind(this);
+    this.createChat = this.createChat.bind(this);
   }
   componentDidMount() {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -68,10 +69,9 @@ class Search extends Component {
     api
       .post(`${API_URL}/api/friend/to/${to}/from/${from}`)
       .then((res) => {
-        console.log(res.data)
-        if(res.data.error != null){
+        if (res.data.error != null) {
           alert(res.data.error);
-        }else{
+        } else {
           alert("Friend Request sent!");
         }
       })
@@ -82,6 +82,32 @@ class Search extends Component {
       });
   }
 
+  createChat(event) {
+    const thisUser = JSON.parse(localStorage.getItem("user")).username;
+    var resultsCard = event.target.parentNode.id;
+    var selectedUser = document
+      .getElementById(resultsCard)
+      .getAttribute("username");
+    var roomName = thisUser + "-" + selectedUser;
+
+    let payload = {
+      owner: thisUser,
+      roomName: roomName,
+      private: true,
+      participants: 0,
+      id: Date.now(),
+      privateUsers: [thisUser, selectedUser],
+      sockets: [],
+    };
+
+    api.post(`${API_URL}/api/rooms/add`, payload).catch((err) => {
+      console.error(err);
+      alert(err);
+    });
+    alert(`${payload.roomName} Created!`);
+    this.props.history.push(`/chat/${payload.id}`);
+  }
+
   render() {
     let results = [];
     let resultsTitle;
@@ -89,11 +115,9 @@ class Search extends Component {
       let friendStatus;
       if (this.state.results[i].friendIcon === "Friends") {
         friendStatus = (
-          <button
-            className="search__acceptButton"
-          >
-            View Profile
-          </button>
+          <div>
+            <button className="search__viewProfileButton">View Profile</button>
+          </div>
         );
       } else {
         friendStatus = (
@@ -101,12 +125,17 @@ class Search extends Component {
             className="search__addIcon material-icons"
             onClick={() => this.addFriend(this.state.results[i].friend._id)}
           >
-           add
+            add
           </i>
         );
       }
       results.push(
-        <div className="search__resultsCard" key={i}>
+        <div
+          className="search__resultsCard"
+          key={i}
+          id={"userCard" + i}
+          username={this.state.results[i].username}
+        >
           <i className="search__resultsIcon material-icons">person</i>
           <p className="search__resultsName">
             {this.state.results[i].friend.fname}{" "}
@@ -119,6 +148,12 @@ class Search extends Component {
             <br></br>
           </p>
           {friendStatus}
+          <i
+              className="search__chatIcon material-icons"
+              onClick={this.createChat}
+            >
+              chat
+            </i>
         </div>
       );
     }

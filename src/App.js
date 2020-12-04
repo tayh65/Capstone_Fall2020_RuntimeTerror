@@ -5,8 +5,9 @@ import Login from "./views/Login";
 import Profile from "./views/Profile";
 import Register from "./views/Register";
 import SuccessPage from "./views/SuccessPage";
-//import ChatRoomsPage from "./views/ChatRoomsPage";
+import ChatRoomsPage from "./views/ChatRoomsPage";
 import Chat from "./views/Chat";
+import CreateChatRoom from "./views/CreateChatRoom"
 import Search from "./views/Search";
 import NavBar from "./components/NavBar.component";
 import { Redirect } from "react-router-dom";
@@ -85,9 +86,10 @@ class App extends Component {
             <Route path="/search">
               <Search />
             </Route>
-            <Route path="/chatrooms">
-              <Chat />
-            </Route>
+            <Route path="/chatrooms"><ChatRoomsPage/></Route>
+            {/* <Route path="/chat">{Chat}</Route> */}
+            <Route path="/chat/:id?" id="***"><Chat/></Route>
+            <Route path="/create_room"><CreateChatRoom/></Route>
           </Switch>
         </Router>
         <div className="App__divider"></div>

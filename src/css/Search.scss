@@ -100,13 +100,24 @@
     cursor: pointer;
 }
 
+.search__chatIcon {
+    position: absolute;
+    margin-left: 31rem;
+    padding: 16px;
+    color: black;
+    margin-right: auto;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 ::placeholder {
     font-size: 20px;
 }
 
-.search__acceptButton {
+.search__viewProfileButton {
     position: absolute;
-    margin-left: 39rem;
+    margin-left: 25rem;
     padding: 5px;
     background-color: black;
     color: white;

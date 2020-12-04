@@ -53,6 +53,9 @@ app.get("/getChannels", (req, res) => {
 require("./app/routes/user.routes")(app);
 require("./app/routes/room.routes")(app);
 
+// friend routes
+require("./app/routes/friend.routes")(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, () => {

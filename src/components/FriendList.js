@@ -1,36 +1,40 @@
-import React from 'react';
-import Friend from './Friend';
+import React from "react";
 import "../css/App.scss";
-// import "../css/FriendList.scss";
-// import { withRouter } from "react-router-dom";
 
 class FriendList extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      friends: [],
+    };
+  }
 
-    constructor(props) {
-        super();
-        // console.log(this.props);
-        this.state = {friends: []};//{ friends: this.props.friendList };
-        console.log('FriendList Constructor', this.state.friends);
-    }
-
-    render() {
-        // Loop through all the friends in props and add to view
-        const friends = this.props.friendList.map((friend, i) => {
-            return (
-                <Friend
-                    key={i}
-                    username={friend.username}
-                    fname={friend.fname}
-                    lname={friend.lname}
-                    email={friend.email} />
-            );
-        });
-        return (
-            <div className='friends' id='friendList'>
-                { friends }
-            </div>
+  componentDidMount() {
+    this.setState({ friends: this.props.friends });
+  }
+  
+  render() {
+    let friends = this.state.friends;
+    let FriendDisplay = [];
+    if (friends != null) {
+      for (let i = 0; i < friends.length; i++) {
+        FriendDisplay.push(
+          <div className="profile__resultsCard"  key={i}>
+            <i className="profile__resultsIcon material-icons">person</i>
+            <p className="profile__resultsName">
+              {friends[i].fname} {friends[i].lname}
+            </p>
+            <p className="profile__resultsContent">
+              Username: {friends[i].username}
+              <br></br>
+              Email: {friends[i].email}
+              <br></br>
+            </p>
+          </div>
         );
+      }
     }
+    return <div>{FriendDisplay}</div>;
+  }
 }
-
-export default FriendList;//withRouter(FriendList);
+export default FriendList;

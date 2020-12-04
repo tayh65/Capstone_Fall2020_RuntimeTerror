@@ -100,9 +100,9 @@
     cursor: pointer;
 }
 
-.search__chatIcon{
+.search__chatIcon {
     position: absolute;
-    margin-left: 40rem;
+    margin-left: 31rem;
     padding: 16px;
     color: black;
     margin-right: auto;
@@ -113,4 +113,18 @@
 
 ::placeholder {
     font-size: 20px;
+}
+
+.search__viewProfileButton {
+    position: absolute;
+    margin-left: 25rem;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    margin-right: auto;
+    font-size: 18px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 1rem;
+    cursor: pointer;
 }

@@ -49,7 +49,7 @@ export const SideBarData = [
     {
         title: 'Login',
         path: '/login',
-        icon: <AIIcons.AiOutlineCoffee/>,
+        icon: <AIIcons.AiOutlineLogin/>,
         cName: 'nav_text'
     }
 ]

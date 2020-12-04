@@ -8,30 +8,42 @@ class Home extends Component {
     super();
     this.state = {
       isLoggedIn: false,
+      user: {},
     };
   }
 
   componentDidMount() {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const user = JSON.parse(localStorage.getItem("user"));
+
     this.setState({ isLoggedIn: isLoggedIn });
+    if (user != null) {
+      this.setState({ user: user });
+    }
   }
 
   render() {
     let isLoggedIn = this.state.isLoggedIn;
     let Section;
+    let welcomMessage;
     if (isLoggedIn === "true") {
-      Section = (
-        <div
-          className="home__profileSection"
-          onClick={() => {
-            this.props.clickLogout();
-            alert("Logout Successful!");
-            this.props.history.push("/login");
-          }}
-        >
-          <i className="home__logoutIcon material-icons">power_settings_new</i>
-          Logout
-        </div>
+      welcomMessage = (<h2 className="home__welcomeMessage">
+      Welcome back, {this.state.user.fname}
+    </h2>)
+      Section = ( 
+          <div
+            className="home__profileSection"
+            onClick={() => {
+              this.props.clickLogout();
+              alert("Logout Successful!");
+              this.props.history.push("/login");
+            }}
+          >
+            <i className="home__logoutIcon material-icons">
+              power_settings_new
+            </i>
+            Logout
+          </div>
       );
     } else {
       Section = (
@@ -51,6 +63,7 @@ class Home extends Component {
       <div className="home">
         <div className="home__header">
           <h1 className="home__pageTitle">MoChat</h1>
+          {welcomMessage}
           {Section}
         </div>
         <div className="home__sectionContainer">
@@ -86,7 +99,7 @@ class Home extends Component {
                 Start chatting now!
               </p>
               <div className="home__arrowSection">
-                <a href="/chat">
+                <a href="/chatrooms">
                   <i className="home__minimizeIcon material-icons">minimize</i>
                   <i className="home__arrowIcon material-icons">
                     arrow_right_alt

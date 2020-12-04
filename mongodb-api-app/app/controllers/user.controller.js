@@ -79,7 +79,6 @@ exports.login = async (req, res) => {
           email: user.email,
           friends: user.friends
         };
-        // console.log(payload);
         jwt.sign(
           payload,
           "secret",
@@ -136,7 +135,6 @@ exports.searchUsers = async (req, res) => {
   await User.find({ $and: [ { $or: [{username: regex },{email: regex}] }] } 
     )
     .then((data) => {
-      console.log(data);
       res.json(data);
     })
     .catch((err) => {
@@ -170,37 +168,41 @@ async function updatePassword(body, id) {
 // Update a User by the id in the request
 exports.update = async (req, res) => {
   let newUserData = {_id: req.params.id};
-  console.log(newUserData);
   if (req.body.fname) newUserData.fname = req.body.fname;
   if (req.body.lname) newUserData.lname = req.body.lname;
   if (req.body.email) {
     User.findOne({ email: req.body.email })
       .then(data => {
-        if (data) {
-          res.status(400).json("Invalid User email.");
+        if (data != null && data._id != newUserData._id) {
+          res.json({error: "There is a different user with that email already in the system."});
         }
       })
       .catch(err => {
-        res.status(500).json("Error validating email");
+        res.json({error:"Error validating email"});
       });
     newUserData.email = req.body.email;
   }
   if (req.body.password){
     updatePassword(req.body, newUserData._id);
   } 
-  if(req.body.username) {
     User.findOne( {username: req.body.username}, (err, data) => {
-      if(err) res.status(500).json(err);
-      if(data) res.status(400).json("Username already exists.");
+      if(err)  res.json({error:err});
+      if(data != null && data._id != newUserData._id)  res.json({error:"Username already exists."});
     } );
     newUserData.username = req.body.username;
-  }
   if(req.body.friends) newUserData.friends = req.body.friends;
+
   // update user with newUserData
   await User.findByIdAndUpdate( newUserData._id,  
     newUserData)
-    .then(updatedUser => {
-      res.status(200).json(updatedUser);
+    .then( updatedUser => {
+      updatedUser.fname = newUserData.fname;
+      updatedUser.lname = newUserData.lname;
+      updatedUser.email = newUserData.email;
+      updatedUser.username = newUserData.username;
+      updatedUser.password = newUserData.password;
+      updatedUser.friends = newUserData.friends;
+       res.json(updatedUser);
     })
     .catch(err => {
       res.status(500).json(err);

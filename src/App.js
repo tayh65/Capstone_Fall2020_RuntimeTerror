@@ -54,20 +54,7 @@ class App extends Component {
 
   render() {
     let isLoggedIn = this.state.isLoggedIn;
-    let profileRoute;
-    let chatRoute;
-    let searchRoute;
 
-    if (isLoggedIn) {
-      profileRoute = (<Profile clickLogout={this.logout} />);
-      chatRoute = (<ChatRoomsPage />);
-      searchRoute = (<Search />);
-    }
-    else {
-      profileRoute = (<Redirect to="/login" />);
-      chatRoute = (<Redirect to="/login" />);
-      searchRoute = (<Redirect to="/login" />);
-    }
     return (
       <div className="App">
         <Router>
@@ -77,18 +64,18 @@ class App extends Component {
               exact
               path="/"
               render={() =>
-                isLoggedIn ? (
-                  <Redirect to="/login" />
-                ) : (
-                    <Redirect to="/home" />
-                  )
+                isLoggedIn ? <Redirect to="/login" /> : <Redirect to="/home" />
               }
             />
             <Route path="/home">
               <Home isLoggedIn={isLoggedIn} clickLogout={this.logout} />
             </Route>
-            <Route path="/search">{searchRoute}</Route>
-            <Route path="/profile">{profileRoute}</Route>
+            <Route path="/search">
+              <Search />
+            </Route>
+            <Route path="/profile">
+              <Profile setUser={this.setUserState} />
+            </Route>
             <Route path="/register">
               <Register clickLogout={this.logout} />
             </Route>
@@ -99,10 +86,10 @@ class App extends Component {
             <Route path="/search">
               <Search />
             </Route>
-            <Route path="/chatrooms">{chatRoute}</Route>
+            <Route path="/chatrooms"><ChatRoomsPage/></Route>
             {/* <Route path="/chat">{Chat}</Route> */}
-            <Route path="/chat/:id?" id="***">{Chat}</Route>
-            <Route path="/create_room">{CreateChatRoom}</Route>
+            <Route path="/chat/:id?" id="***"><Chat/></Route>
+            <Route path="/create_room"><CreateChatRoom/></Route>
           </Switch>
         </Router>
         <div className="App__divider"></div>

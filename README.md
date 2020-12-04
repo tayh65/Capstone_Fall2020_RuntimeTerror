@@ -1,35 +1,3 @@
-## Overview
-
-#### REPORTS: 
-  ##### Contents (final report, user's manual, installation instructions)
-  Installation instructions can also be found below in the README.md 
-  
-#### SRC: 
-  ##### Contents (assets, components, config, css, views, App.js, index.js, routes.js, serviceWorker.js)
-  This folder contains all of the neccessities of running the web application. The assets folder is for storing images for the web pages.<br />
-
-#### COMPONENTS: 
-  ##### Contents (Channel, ChannelList, ChatInput, FriendList, Message, Messages, NavBar, NavBarData)
-  In the components folder there are ReactJS components for rendering data that isn't page specific.<br/>
-
-#### CSS: 
-  ##### Contents (App, ChannelList, Chat, ChatRoom, CreateChatRoom, Home, Login, Messages, NavBar, Profile, Register, Search, SuccessPage, index)
-#### VIEWS:
-  ##### Contents (About, Chat, ChatRoomPage, CreateChatRoom, Home, Login, Profile, Register, Search, SuccessPage)
-
-#### MONGODB-API-APP: 
-  ##### Contents (app, package.json, passport.js, server.js, validateInput.js)
-  Contains the necessary files and folders for running the server application.
-
-#### APP:
-##### Contents (Controllers, models, routes)
-The app folder in side of the server application contains all the neccessary files for running the server.<br/>
-In controllers there is a controller for Users, ChatRooms, and FriendRequests.<br/>
-Similarly, the models folder houses User, ChatRoom, FriendRequest, and Message models for the database.<br/>
-Lastly, the routes for the api include: User, ChatRoom, and Friend routes for accessing the data.
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Runtime Terror CoffeShop App
 
 ### Installation Instructions:
@@ -85,7 +53,37 @@ To run the server follow these commands in a separate terminal:
 
 The server application will now be listening for client connections.
 
-## Learn More
+## Overview
+
+#### REPORTS: 
+  ##### Contents (final report, user's manual, installation instructions)
+  Installation instructions can also be found below in the README.md 
+  
+#### SRC: 
+  ##### Contents (assets, components, config, css, views, App.js, index.js, routes.js, serviceWorker.js)
+  This folder contains all of the neccessities of running the web application. The assets folder is for storing images for the web pages.<br />
+
+#### COMPONENTS: 
+  ##### Contents (Channel, ChannelList, ChatInput, FriendList, Message, Messages, NavBar, NavBarData)
+  In the components folder there are ReactJS components for rendering data that isn't page specific.<br/>
+
+#### CSS: 
+  ##### Contents (App, ChannelList, Chat, ChatRoom, CreateChatRoom, Home, Login, Messages, NavBar, Profile, Register, Search, SuccessPage, index)
+#### VIEWS:
+  ##### Contents (About, Chat, ChatRoomPage, CreateChatRoom, Home, Login, Profile, Register, Search, SuccessPage)
+
+#### MONGODB-API-APP: 
+  ##### Contents (app, package.json, passport.js, server.js, validateInput.js)
+  Contains the necessary files and folders for running the server application.
+
+#### APP:
+##### Contents (Controllers, models, routes)
+The app folder in side of the server application contains all the neccessary files for running the server.<br/>
+In controllers there is a controller for Users, ChatRooms, and FriendRequests.<br/>
+Similarly, the models folder houses User, ChatRoom, FriendRequest, and Message models for the database.<br/>
+Lastly, the routes for the api include: User, ChatRoom, and Friend routes for accessing the data.
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 

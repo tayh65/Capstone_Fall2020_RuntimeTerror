@@ -28,6 +28,7 @@ class Profile extends Component {
     this.showFriends = this.showFriends.bind(this);
     this.showFriendRequests = this.showFriendRequests.bind(this);
     this.acceptFriendRequest = this.acceptFriendRequest.bind(this);
+    this.denyFriendRequest = this.denyFriendRequest.bind(this);
     this.editAccount = this.editAccount.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
   }
@@ -77,9 +78,7 @@ class Profile extends Component {
       .get(`${API_URL}/api/friend/to/${userId}`)
       .then((res) => {
         this.setState({ friendRequestData: res.data });
-        if (
-          res.data != null && res.data.length > 0
-        ) {
+        if (res.data != null && res.data.length > 0) {
           for (let i = 0; i < res.data.length; i++) {
             api
               .get(`${API_URL}/api/users/${res.data[i].user_from}`)
@@ -150,7 +149,7 @@ class Profile extends Component {
     api
       .put(`${API_URL}/api/users/edit/${id}`, payload)
       .then(async (res) => {
-        if(res.data.error != null){
+        if (res.data.error != null) {
           alert(res.data.error);
         }
         if (res != null && res.data != null) {
@@ -198,6 +197,28 @@ class Profile extends Component {
               this.props.setUser(payload);
               this.getFriends(newFriends);
               this.getFriendRequests(payload._id);
+              this.setState({ view: "" });
+            })
+            .catch((err) => {
+              if (err) {
+                alert(err);
+              }
+            });
+        }
+      });
+    }
+  }
+
+  denyFriendRequest(friend) {
+    let friendRequestData = this.state.friendRequestData;
+    if (friendRequestData != null && friendRequestData.length > 0) {
+      friendRequestData.find((req) => {
+        if (req.user_from === friend) {
+          api
+            .delete(`${API_URL}/api/friend/deny/${req._id}`)
+            .then((res) => {
+              alert(res.data);
+              this.getFriendRequests(this.state._id);
               this.setState({ view: "" });
             })
             .catch((err) => {
@@ -323,8 +344,7 @@ class Profile extends Component {
       div.style.overflow = "auto";
 
       title = <div className="profile__sectionTitle">Friend List:</div>;
-      View =  <FriendList friends={this.state.friends}/>
-        
+      View = <FriendList friends={this.state.friends} />;
     } else if (display === "friendRequests") {
       let div = document.querySelector("#subSection");
       div.style.overflow = "auto";
@@ -355,7 +375,9 @@ class Profile extends Component {
             </button>
             <button
               className="profile__declineButton"
-              onClick={() => this.acceptFriendRequest}
+              onClick={() =>
+                this.denyFriendRequest(this.state.friendRequests[i]._id)
+              }
             >
               Decline
             </button>

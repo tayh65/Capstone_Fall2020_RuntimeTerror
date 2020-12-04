@@ -1,0 +1,35 @@
+.about {
+    display: inline-block;
+    margin-top: 0;
+}
+
+.about__section {
+    margin-top: 1rem;
+}
+
+.about__pageTitle {
+    font-family: 'Lobster Two', cursive;
+    font-weight: normal;
+    text-align: center;
+    font-size: 50px;
+}
+
+.about__subSection {
+    position: relative;
+    margin-top: 3rem;
+    right: 5px;
+    background-color: black;
+    border: 2px border white;
+    width: 950px;
+    height: 400px;
+    margin-bottom: 5rem;
+    border-radius: 15px;
+}
+
+.about__sectionContent {
+    color: white;
+    font-size: 20px;
+    margin: 5rem;
+    position: relative;
+    top: 70px;
+}

@@ -139,3 +139,13 @@ exports.updateFriendRequest = async (req, res) => {
       });
   }
 };
+// Delete a User with the specified id in the request
+exports.denyFriendRequest = (req, res) => {
+  FriendRequest.deleteOne({ _id: req.params.id })
+    .then(() => {
+      res.json("Friend Request denied");
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+};

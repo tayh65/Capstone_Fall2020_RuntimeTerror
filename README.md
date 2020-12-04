@@ -17,8 +17,8 @@ In the components folder there are ReactJS components for rendering data that is
 ##### Contents (app, package.json, passport.js, server.js, validateInput.js)
 Contains the necessary files and folders for running the server application.
 
-#### app: Contents (Controllers, models, routes)
-
+#### app:
+##### Contents (Controllers, models, routes)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -1,5 +1,9 @@
 ## Overview
 
+#### REPORTS: 
+  ##### Contents (final report, user's manual, installation instructions)
+  Installation instructions can also be found below in the README.md 
+  
 #### SRC: 
   ##### Contents (assets, components, config, css, views, App.js, index.js, routes.js, serviceWorker.js)
   This folder contains all of the neccessities of running the web application. The assets folder is for storing images for the web pages.<br />

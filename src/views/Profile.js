@@ -4,11 +4,10 @@ import "../css/Profile.scss";
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
-import FriendList from "../components/FriendList";
 // import { Alert } from "reactstrap";
 
 class Profile extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       _id: "",
@@ -20,7 +19,6 @@ class Profile extends Component {
       friendRequests: [],
       friendRequestData: [],
       view: "",
-      friendDetails: []
     };
     this.firstNameUpdated = this.firstNameUpdated.bind(this);
     this.lastNameUpdated = this.lastNameUpdated.bind(this);
@@ -55,14 +53,12 @@ class Profile extends Component {
   }
 
   getFriends(friends) {
-    console.log(friends);
     let friendList = [];
     if (friends != null && friends.length > 0) {
       for (let i = 0; i < friends.length; i++) {
         api
           .get(`${API_URL}/api/users/${friends[i]}`)
           .then((res) => {
-            console.log();
             friendList.push(res.data);
             this.setState({ friends: friendList });
           })
@@ -80,8 +76,10 @@ class Profile extends Component {
     api
       .get(`${API_URL}/api/friend/to/${userId}`)
       .then((res) => {
-        if (res != null && res.data != null) {
-          this.setState({ friendRequestData: res.data });
+        this.setState({ friendRequestData: res.data });
+        if (
+          res.data != null && res.data.length > 0
+        ) {
           for (let i = 0; i < res.data.length; i++) {
             api
               .get(`${API_URL}/api/users/${res.data[i].user_from}`)
@@ -90,6 +88,8 @@ class Profile extends Component {
                 this.setState({ friendRequests: friendRequests });
               });
           }
+        } else {
+          this.setState({ friendRequests: [] });
         }
       })
       .catch((err) => {
@@ -123,46 +123,9 @@ class Profile extends Component {
     this.setState({ friends: event.target.value });
   }
 
-  populateFriends(event) {
+  showFriends(event) {
     event.preventDefault();
-
-    let friendDetails = this.state.friendDetails;
-    let friends = this.state.friends;
-    friends.forEach( (friendID) => {
-      console.log("FRIEND ID: " + friendID);
-      let alreadyPopulated = friendDetails.find(friend => friend._id === friendID);
-      console.log(alreadyPopulated);
-
-      if(!alreadyPopulated) {
-        let data = {};
-        api
-            .get(`${API_URL}/api/users/${friendID}`)
-            .then((res) => {
-              // console.log("RESPONSE: " + res.data);
-              // Remove id from friends if the response is null
-              if(res.data === null) {
-                friends.splice(friends.indexOf(friendID), 1);
-                // console.log("REMOVE FRIENDID: " + friends);
-                this.setState({friends: friends});
-              }
-              data = {
-                _id: res.data._id,
-                username: res.data.username,
-                fname: res.data.fname,
-                lname: res.data.lname,
-                email: res.data.email
-              }
-              friendDetails.push(data);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-      }//close if
-    });//close forEach
-      
-    // console.log(friendDetails)
-    this.setState({ view: "friends", friendDetails: friendDetails});
-    // console.log(this.state.friendDetails)
+    this.setState({ view: "friends" });
   }
 
   showFriendRequests(event) {
@@ -213,12 +176,10 @@ class Profile extends Component {
               alert("Friend request accepted!");
               let newFriends = [];
               newFriends.push(friend);
-              for(let i = 0; i < this.state.friends.length; i++){
-                console.log(typeof this.state.friends[i]);
-                if(typeof this.state.friends[i] === "object"){
+              for (let i = 0; i < this.state.friends.length; i++) {
+                if (typeof this.state.friends[i] === "object") {
                   newFriends.push(this.state.friends[i]._id);
-                }
-                else{
+                } else {
                   newFriends.push(this.state.friends[i]);
                 }
               }
@@ -415,7 +376,7 @@ class Profile extends Component {
       }
     } else {
       View = (
-        <div className="profile__container">
+        <div>
           <pre className="profile__subSetionLabel">
             First Name: {this.state.fname}
           </pre>
@@ -446,7 +407,7 @@ class Profile extends Component {
             <a className="profile__link" href="/profile">
               <h3
                 className="profile__subSectionContent"
-                onClick={this.populateFriends}
+                onClick={this.showFriends}
               >
                 Friends
               </h3>

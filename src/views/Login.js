@@ -6,7 +6,6 @@ import { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { api, API_URL } from "../config/api";
 
-
 class Login extends Component {
   constructor() {
     super();
@@ -41,7 +40,7 @@ class Login extends Component {
       })
       .catch((err) => {
         if(err){
-          alert(err);
+          alert("Username or passowrd is incorrect.");
         }
       });
   }

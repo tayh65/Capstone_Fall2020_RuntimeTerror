@@ -1,18 +1,23 @@
 ## Overview
 
-#### src: Contents (assets, components, config, css, views, App.js, index.js, routes.js, serviceWorker.js)
+#### src: 
+##### Contents (assets, components, config, css, views, App.js, index.js, routes.js, serviceWorker.js)
 This folder contains all of the neccessities of running the web application. The assets folder is for storing images for the web pages.<br />
 
-###### components: Contents (Channel, ChannelList, ChatInput, FriendList, Message, Messages, NavBar, NavBarData)
+#### components: 
+##### Contents (Channel, ChannelList, ChatInput, FriendList, Message, Messages, NavBar, NavBarData)
 In the components folder there are ReactJS components for rendering data that isn't page specific.<br/>
 
-###### css: Contents (App, ChannelList, Chat, ChatRoom, CreateChatRoom, Home, Login, Messages, NavBar, Profile, Register, Search, SuccessPage, index)
-###### views: Contents (About, Chat, ChatRoomPage, CreateChatRoom, Home, Login, Profile, Register, Search, SuccessPage)
+#### css: 
+##### Contents (App, ChannelList, Chat, ChatRoom, CreateChatRoom, Home, Login, Messages, NavBar, Profile, Register, Search, SuccessPage, index)
+#### views:
+##### Contents (About, Chat, ChatRoomPage, CreateChatRoom, Home, Login, Profile, Register, Search, SuccessPage)
 
-#### mongodb-api-app: Contents (app, package.json, passport.js, server.js, validateInput.js)
+#### mongodb-api-app: 
+##### Contents (app, package.json, passport.js, server.js, validateInput.js)
 Contains the necessary files and folders for running the server application.
 
-###### app: Contents (Controllers, models, routes)
+#### app: Contents (Controllers, models, routes)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

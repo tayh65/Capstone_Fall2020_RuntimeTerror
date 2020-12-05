@@ -75,7 +75,7 @@ class App extends Component {
               <Search />
             </Route>
             <Route path="/profile">
-              <Profile setUser={this.setUserState} />
+              <Profile setUser={this.setUserState} clickLogout={this.logout}/>
             </Route>
             <Route path="/register">
               <Register clickLogout={this.logout} />
